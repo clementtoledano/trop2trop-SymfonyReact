@@ -3,16 +3,20 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @ApiResource
+ * @ApiResource(denormalizationContext={"disable_type_enforcement"=true})
+ * @UniqueEntity("email", message="l'email est deja utilisé")
  */
 class User implements UserInterface
 {
@@ -28,6 +32,8 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Groups("post:read")
+     * @Assert\NotBlank(message="l'email est obligatoire")
+     * @Assert\Email(message="le format de l'email doit etre correct")
      */
     private $email;
 
@@ -39,6 +45,7 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="le password est obligatoire")
      */
     private $password;
 
@@ -56,17 +63,22 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\Type("datetime", message="la date doit etre au format YYYY-MM-DD")
+     * @Assert\NotBlank(message="la date de creation est obligatoire")
      */
     private $createAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\Type("datetime", message="la date doit etre au format YYYY-MM-DD")
      */
     private $updateAt;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups("post:read")
+     * @Assert\NotBlank(message="le pseudo est obligatoire")
+     * @Assert\Length(min="3", minMessage="le pseudo doit faire au moins 3 caractères", max="20", maxMessage="le pseudo doit faire au maximum 20 caractères")
      */
     private $name;
 
@@ -105,7 +117,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -132,7 +144,7 @@ class User implements UserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return (string)$this->password;
     }
 
     public function setPassword(string $password): self
@@ -183,24 +195,24 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCreateAt(): DateTimeInterface
+    public function getCreateAt(): \DateTimeInterface
     {
         return $this->createAt;
     }
 
-    public function setCreateAt(DateTimeInterface $createAt): self
+    public function setCreateAt($createAt): self
     {
         $this->createAt = $createAt;
 
         return $this;
     }
 
-    public function getUpdateAt(): ?DateTimeInterface
+    public function getUpdateAt(): ?\DateTimeInterface
     {
         return $this->updateAt;
     }
 
-    public function setUpdateAt(DateTimeInterface $updateAt): self
+    public function setUpdateAt($updateAt): self
     {
         $this->updateAt = $updateAt;
 
@@ -249,7 +261,6 @@ class User implements UserInterface
 
         return $this;
     }
-
 
 
 }

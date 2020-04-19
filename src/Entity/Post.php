@@ -3,19 +3,20 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
  * @ApiResource(
  *     normalizationContext={"groups"={"post:read"}},
- *     denormalizationContext={"groups"={"write"}}
+ *     denormalizationContext={"disable_type_enforcement"=true}
  * )
  */
 class Post
@@ -31,6 +32,8 @@ class Post
     /**
      * @ORM\Column(type="text")
      * @Groups("post:read")
+     * @Assert\NotBlank(message="le contenu est obligatoire")
+     * @Assert\Length(min="10", minMessage="le pseudo doit faire au moins 10 caractères", max="141", maxMessage="le pseudo doit faire au maximum 141 caractères")
      */
     private $content;
 
@@ -43,23 +46,29 @@ class Post
     /**
      * @ORM\Column(type="datetime")
      * @Groups("post:read")
+     * @Assert\Type("datetime", message="la date doit etre au format YYYY-MM-DD")
+     * @Assert\NotBlank(message="la date de creation est obligatoire")
      */
     private $createAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups("post:read")
+     * @Assert\Type("datetime", message="la date doit etre au format YYYY-MM-DD")
      */
     private $updateAt;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="posts")
      * @Groups("post:read")
+     * @Assert\NotBlank(message="la categorie est obligatoire")
      */
     private $category;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Image", mappedBy="post", cascade={"persist", "remove"})
      * @Groups("post:read")
+     * @Assert\NotBlank(message="l'image est obligatoire")
      */
     private $image;
 
@@ -103,6 +112,7 @@ class Post
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="posts")
      * @ORM\JoinColumn(nullable=false)
      * @Groups("post:read")
+     * @Assert\NotBlank(message="le user est obligatoire")
      */
     private $user;
 
@@ -173,24 +183,24 @@ class Post
         return $this;
     }
 
-    public function getCreateAt(): DateTimeInterface
+    public function getCreateAt(): \DateTimeInterface
     {
         return $this->createAt;
     }
 
-    public function setCreateAt(DateTimeInterface $createAt): self
+    public function setCreateAt($createAt): self
     {
         $this->createAt = $createAt;
 
         return $this;
     }
 
-    public function getUpdateAt(): ?DateTimeInterface
+    public function getUpdateAt(): ?\DateTimeInterface
     {
         return $this->updateAt;
     }
 
-    public function setUpdateAt(DateTimeInterface $updateAt): self
+    public function setUpdateAt($updateAt): self
     {
         $this->updateAt = $updateAt;
 
