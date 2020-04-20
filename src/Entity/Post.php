@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -183,7 +184,7 @@ class Post
         return $this;
     }
 
-    public function getCreateAt(): \DateTimeInterface
+    public function getCreateAt(): ?DateTimeInterface
     {
         return $this->createAt;
     }
@@ -195,7 +196,7 @@ class Post
         return $this;
     }
 
-    public function getUpdateAt(): ?\DateTimeInterface
+    public function getUpdateAt(): ?DateTimeInterface
     {
         return $this->updateAt;
     }

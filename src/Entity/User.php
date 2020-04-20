@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -177,7 +178,7 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    public function getIsActive(): bool
+    public function getIsActive(): ?bool
     {
         return $this->isActive;
     }
@@ -189,7 +190,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getIsAdmin(): bool
+    public function getIsAdmin(): ?bool
     {
         return $this->isAdmin;
     }
@@ -201,7 +202,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCreateAt(): \DateTimeInterface
+    public function getCreateAt(): ?DateTimeInterface
     {
         return $this->createAt;
     }
@@ -213,7 +214,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getUpdateAt(): ?\DateTimeInterface
+    public function getUpdateAt(): ?DateTimeInterface
     {
         return $this->updateAt;
     }
