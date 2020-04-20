@@ -1,0 +1,52 @@
+version: '3.4'
+
+services:
+
+    # APP
+    nginx:
+        build: docker/nginx
+        volumes:
+            - ./:/symfony:cached
+        links:
+            - php
+        depends_on:
+            - php
+        ports:
+            - "8000:80"
+
+    php:
+        build: docker/php
+        volumes:
+            - ./:/symfony:cached
+        links:
+            - db
+    db:
+        build: docker/mysql
+        restart: always
+        environment:
+            MYSQL_DATABASE: 'trop22trop'
+            MYSQL_USER: 'root'
+            MYSQL_PASSWORD: 'root'
+            MYSQL_ROOT_PASSWORD: 'root'
+        volumes:
+            - ./var/db:/var/lib/mysql
+        ports:
+            - "3306:3306"
+#    phpmyadmin:
+#        image: phpmyadmin/phpmyadmin:latest
+#        container_name: phpmyadmin
+#        environment:
+#            MYSQL_ROOT_PASSWORD: meetpro
+#            MYSQL_USER: meetpro
+#            MYSQL_PASSWORD: meetpro
+#            PMA_ARBITRARY: 1
+#        links:
+#            - db
+#        ports:
+#            - "8000:80"
+#
+#    maildev:
+#        image: djfarrelly/maildev
+#        container_name: maildev
+#        ports:
+#            - "1080:80"

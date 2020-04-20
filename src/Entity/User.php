@@ -15,7 +15,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @ApiResource(denormalizationContext={"disable_type_enforcement"=true})
+ * @ApiResource(
+ *     normalizationContext={"groups"={"user:read"}},
+ *     denormalizationContext={"disable_type_enforcement"=true}
+ *     )
  * @UniqueEntity("email", message="l'email est deja utilisé")
  */
 class User implements UserInterface
@@ -24,14 +27,14 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("post:read")
+     * @Groups({"post:read","user:read"})
      */
     private $id;
 
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups("post:read")
+     * @Groups({"post:read","user:read"})
      * @Assert\NotBlank(message="l'email est obligatoire")
      * @Assert\Email(message="le format de l'email doit etre correct")
      */
@@ -39,6 +42,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"post:read","user:read"})
      */
     private $roles = [];
 
@@ -51,13 +55,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups("post:read")
+     * @Groups({"post:read","user:read"})
      */
     private $isActive;
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups("post:read")
+     * @Groups({"post:read","user:read"})
      */
     private $isAdmin;
 
@@ -65,18 +69,20 @@ class User implements UserInterface
      * @ORM\Column(type="datetime")
      * @Assert\Type("datetime", message="la date doit etre au format YYYY-MM-DD")
      * @Assert\NotBlank(message="la date de creation est obligatoire")
+     * @Groups({"post:read","user:read"})
      */
     private $createAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      * @Assert\Type("datetime", message="la date doit etre au format YYYY-MM-DD")
+     * @Groups({"user:read"})
      */
     private $updateAt;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("post:read")
+     * @Groups({"post:read","user:read"})
      * @Assert\NotBlank(message="le pseudo est obligatoire")
      * @Assert\Length(min="3", minMessage="le pseudo doit faire au moins 3 caractères", max="20", maxMessage="le pseudo doit faire au maximum 20 caractères")
      */

@@ -4,7 +4,7 @@
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
-/var/
+/var/*
 /vendor/
 ###< symfony/framework-bundle ###
 
@@ -13,5 +13,10 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
+
+# phpstorm folder
 /.idea/
-composer.lock
