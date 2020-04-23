@@ -16,6 +16,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
  * @ApiResource(
+ *     attributes={
+ *          "pagination_enabled"=true,
+ *          "pagination_items_per_page"=10,
+ *          "order":{"createAt":"desc"}
+ *     },
  *     normalizationContext={"groups"={"post:read"}},
  *     denormalizationContext={"disable_type_enforcement"=true}
  * )
@@ -31,7 +36,7 @@ class Post
     private $id;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text")z
      * @Groups("post:read")
      * @Assert\NotBlank(message="le contenu est obligatoire")
      * @Assert\Length(min="10", minMessage="le pseudo doit faire au moins 10 caractères", max="141", maxMessage="le pseudo doit faire au maximum 141 caractères")

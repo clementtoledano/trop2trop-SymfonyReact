@@ -17,6 +17,6 @@ class JwtCreatedSubscriber
         $data['isAdmin'] = $user->getIsAdmin();
         $data['isActive'] = $user->getIsActive();
 
-        $event->setHeader($data);
+        $event->setData($data);
     }
 }
