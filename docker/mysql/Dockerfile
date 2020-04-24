@@ -1,4 +1,4 @@
-FROM mysql:5.7
+FROM mariadb:latest
 
 COPY conf/custom.cnf /etc/mysql/conf.d/custom.cnf
 

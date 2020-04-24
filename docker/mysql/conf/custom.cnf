@@ -1,5 +1,5 @@
 [mysqld]
-
+user=localhost
 #################################################
 ## Charset
 
@@ -51,9 +51,13 @@ long_query_time     = 1
 #################################################
 ## Connections
 ##
-## keep connections low because each conncetion
+## keep connections low because each connection
 ## will have their own buffers
 ## - prevent swapping here -
+
+
+#skip-networking
+bind-address= 0.0.0.0
 
 max_connections    = 20
 max_allowed_packet = 16M

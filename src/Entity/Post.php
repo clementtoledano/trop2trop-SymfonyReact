@@ -64,12 +64,12 @@ class Post
      */
     private $updateAt;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="posts")
-     * @Groups("post:read")
-     * @Assert\NotBlank(message="la categorie est obligatoire")
-     */
-    private $category;
+//    /**
+//     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="posts")
+//     * @Groups("post:read")
+//     * @Assert\NotBlank(message="la categorie est obligatoire")
+//     */
+//    private $category;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Image", mappedBy="post", cascade={"persist", "remove"})
@@ -122,12 +122,19 @@ class Post
      */
     private $user;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Hashtag", mappedBy="posts")
+     * @Groups("post:read")
+     */
+    private $hashtags;
+
     public function __construct()
     {
         $this->feelingSilly = new ArrayCollection();
         $this->feelingScary = new ArrayCollection();
         $this->feelingAngry = new ArrayCollection();
         $this->feelingBored = new ArrayCollection();
+        $this->hashtags = new ArrayCollection();
     }
 
     /**
@@ -209,18 +216,6 @@ class Post
     public function setUpdateAt($updateAt): self
     {
         $this->updateAt = $updateAt;
-
-        return $this;
-    }
-
-    public function getCategory(): ?Category
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?Category $category): self
-    {
-        $this->category = $category;
 
         return $this;
     }
@@ -354,6 +349,34 @@ class Post
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Hashtag[]
+     */
+    public function getHashtags(): Collection
+    {
+        return $this->hashtags;
+    }
+
+    public function addHashtag(Hashtag $hashtag): self
+    {
+        if (!$this->hashtags->contains($hashtag)) {
+            $this->hashtags[] = $hashtag;
+            $hashtag->addPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHashtag(Hashtag $hashtag): self
+    {
+        if ($this->hashtags->contains($hashtag)) {
+            $this->hashtags->removeElement($hashtag);
+            $hashtag->removePost($this);
+        }
 
         return $this;
     }

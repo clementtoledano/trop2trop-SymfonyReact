@@ -13,38 +13,44 @@ services:
             - php
         ports:
             - "8000:80"
-
+        restart: always
+    node:
+        build: docker/node
+        volumes:
+            - ./:/app
+        working_dir: /app
+    db:
+        build: docker/mysql
+        restart: always
+        ports:
+            - "3306:3306"
+        environment:
+            - MYSQL_DATABASE=trop2trop
+            - MYSQL_USER=root
+            - MYSQL_PASSWORD=root
+            - MYSQL_ROOT_PASSWORD=root
+        volumes:
+            - ./var/db:/var/lib/mysql
     php:
         build: docker/php
         volumes:
             - ./:/symfony:cached
         links:
             - db
-    db:
-        build: docker/mysql
-        restart: always
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin:latest
+        container_name: phpmyadmin
         environment:
-            MYSQL_DATABASE: 'trop22trop'
-            MYSQL_USER: 'root'
-            MYSQL_PASSWORD: 'root'
-            MYSQL_ROOT_PASSWORD: 'root'
-        volumes:
-            - ./var/db:/var/lib/mysql
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_USER: root
+            MYSQL_PASSWORD: root
+            PMA_ARBITRARY: 1
+        links:
+            - db
         ports:
-            - "3306:3306"
-#    phpmyadmin:
-#        image: phpmyadmin/phpmyadmin:latest
-#        container_name: phpmyadmin
-#        environment:
-#            MYSQL_ROOT_PASSWORD: meetpro
-#            MYSQL_USER: meetpro
-#            MYSQL_PASSWORD: meetpro
-#            PMA_ARBITRARY: 1
-#        links:
-#            - db
-#        ports:
-#            - "8000:80"
-#
+            - "9000:80"
+
 #    maildev:
 #        image: djfarrelly/maildev
 #        container_name: maildev
