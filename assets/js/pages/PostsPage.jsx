@@ -72,7 +72,9 @@ function PostsPage() {
 
     return (<>
             <form className="search">
-                <input type="text" onDragEnter={callSearchFunction} onChange={handleSearchInputChanges} value={searchTerm} className="form-control" placeholder="Rechercher ..."/>
+                <input type="text" onDragEnter={callSearchFunction} onChange={handleSearchInputChanges}
+                       value={searchTerm} className="form-control" placeholder="Rechercher ..."
+                />
             </form>
             <ul className="bg-light text-dark">
                 {
@@ -87,7 +89,7 @@ function PostsPage() {
             {loading &&
             (<h3>loading...</h3>)
             }
-            {!loading && posts.map(post => <div key={post.id} className="card mb-3 col-6">
+            {!loading && posts.map(post => <div key={post.id} className="card mb-3">
                 <h3 className="card-header">{post.content}</h3>
                 <img height={"350px"} width={"100%"} src={post.image.url} alt="Card image"/>
                 <div className="card-body">
