@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Category;
 use App\Entity\Hashtag;
 use App\Entity\Image;
 use App\Entity\Post;
@@ -59,7 +58,7 @@ class AppFixtures extends Fixture
                     $count++;
                 }
 
-                $image = new Image($faker->userName . '.png', 'https://loremflickr.com/5' . random_int(10, 99) . '/5' . random_int(10, 99) . '/cat');
+                $image = new Image($faker->userName . '.png', 'https://loremflickr.com/6' . random_int(10, 99) . '/3' . random_int(10, 99) . '/cat');
                 $manager->persist($image);
                 $post->setImage($image);
                 $manager->persist($post);

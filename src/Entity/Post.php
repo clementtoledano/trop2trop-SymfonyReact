@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,19 +12,19 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
  * @ApiResource(
  *     attributes={
- *          "pagination_enabled"=true,
- *          "pagination_items_per_page"=10,
  *          "order":{"createAt":"desc"}
  *     },
  *     normalizationContext={"groups"={"post:read"}},
  *     denormalizationContext={"disable_type_enforcement"=true}
  * )
+ * @ApiFilter(SearchFilter::class, properties={"hashtags": "start"})
  */
 class Post
 {

@@ -1,3 +1,48 @@
-body {
-    background-color: lightgray;
+/*body {*/
+/*    background-color: lightgray;*/
+/*}*/
+.card-link{
+    font-size: 1.5em;
+}
+
+
+.filter-list {
+    margin: auto;
+    width: 300px;
+    border-radius: 5px;
+
+}
+.filter-list input {
+    width: 100%;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 24px;
+    border: 1px solid #196090;
+}
+.filter-list input:focus {
+    outline: none;
+}
+.filter-list ul {
+    margin: 0;
+    padding: 0;
+    background: #ACD0D2;
+    display:none;
+    border-radius: 5px;
+    position: relative;
+    top: 5px;
+    border: 1px solid #196090;
+}
+.filter-list ul.true {
+    display:block;
+}
+.filter-list ul li {
+    list-style-type: none;
+    margin: 0;
+    color: white;
+    padding: 10px 20px;
+    cursor:pointer
+}
+.filter-list ul li:hover {
+    background: #2980b9;
 }
