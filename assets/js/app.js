@@ -13,12 +13,16 @@ import AccountProfilePage from "./pages/AccountProfilePage";
 import AccountPostsPage from "./pages/AccountPostsPage";
 import AuthContext from "./contexts/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
+import InputSearch from "./components/InputSearch";
 
 AuthApi.setup();
+
 
 const App = () => {
 
     const [isAuthenticated, setIsAuthenticated] = useState(AuthApi.isAuthenticated());
+    const [searchResults, setSearchResults] = useState([]);
+    const [currentPage, setCurrentPage] = useState('');
 
     const NavbarWithRouter = withRouter(Navbar)
 
@@ -29,21 +33,22 @@ const App = () => {
         <HashRouter>
             <NavbarWithRouter/>
             <div className="container">
-                <div className="row">
+                <div className="row pt-5">
                     <main className="col-8">
-                        <div className="pt-5">
-                            <Switch>
-                                <Route path="/login" component={LoginPage}/>
-                                <Route path="/subscribe" component={SubscribePage}/>
-                                <Route path="/posts" component={PostsPage}/>
-                                <PrivateRoute path={"/post-edit"} component={PostEditPage}/>
-                                <PrivateRoute path={"/account-profile"} component={AccountProfilePage}/>
-                                <PrivateRoute path={"/account-posts"} component={AccountPostsPage}/>
-                                <Redirect path={""} to={"/posts"}/>
-                            </Switch>
-                        </div>
+
+                        <Switch>
+                            <Route path="/login" component={LoginPage}/>
+                            <Route path="/subscribe" component={SubscribePage}/>
+                            <Route path="/posts" component={() => <PostsPage theCurrentPage={currentPage} theSearchResults={searchResults} />}  />
+                            <PrivateRoute path={"/post/:id"} component={PostEditPage}/>
+                            <PrivateRoute path={"/account-profile"} component={AccountProfilePage}/>
+                            <PrivateRoute path={"/account-posts"} component={AccountPostsPage}/>
+                            <Redirect path={""} to={"/posts"}/>
+                        </Switch>
+
                     </main>
                     <aside className={"col-4"}>
+                        <InputSearch theSearchResults={setSearchResults} theCurrentPage={setCurrentPage}/>
                         <div className="card text-white bg-primary mb-3">
                             <div className="card-header">Hashtags</div>
                             <div className="card-body">

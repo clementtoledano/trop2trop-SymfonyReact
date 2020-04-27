@@ -1,26 +1,26 @@
 import React, {useEffect, useState} from 'react';
 import Pagination from "../components/Pagination";
 import PostsAPI from "../services/postsAPI";
-import HashtagsAPI from "../services/hashtagsAPI";
 
 
-function PostsPage() {
+function PostsPage({theCurrentPage, theSearchResults=[]}) {
 
     const [posts, setPosts] = useState([]);
     const [totalItems, setTotalItems] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
+    const searchResult = theSearchResults
     const [loading, setLoading] = useState(true);
-    const [searchTerm, setSearchTerm] = useState("");
-    const [searchResults, setSearchResults] = useState([]);
+
     const itemsPerPage = 20;
 
     useEffect(() => {
+
         fetchPosts()
-    }, [currentPage, searchResults]);
+    }, [currentPage, theCurrentPage, theSearchResults]);
 
     const fetchPosts = async () => {
         try {
-            const data = await PostsAPI.findAll(itemsPerPage, currentPage, searchResults)
+            const data = await PostsAPI.findAll(itemsPerPage, currentPage, searchResult)
             setLoading(false);
             setPosts(data.data['hydra:member']);
             setTotalItems(data.data['hydra:totalItems']);
@@ -35,53 +35,8 @@ function PostsPage() {
         setLoading(true);
     };
 
-    const handleSearchInputChanges = ({currentTarget}) => {
-        setSearchTerm(currentTarget.value)
-        setCurrentPage(1)
-    };
-
-    const resetInputField = () => {
-        setSearchTerm('')
-        setSearchResults([])
-    }
-
-    const callSearchFunction = (e) => {
-        e.preventDefault();
-        search(searchTerm);
-        resetInputField();
-    }
-    useEffect(() => {
-        searchTerm && search(searchTerm)
-    }, [searchTerm])
-
-    const search = async () => {
-        if (searchTerm.length > 1) {
-            try {
-                const search = await HashtagsAPI.findAll()
-                const results = search.filter(tag =>
-                    tag.name.toLowerCase().includes(searchTerm.toLowerCase().trim(), 0)
-                );
-                setSearchResults(results);
-            } catch (e) {
-                console.log(e.response)
-            }
-        } else {
-            setSearchResults([])
-        }
-    };
 
     return (<>
-            <form className="search">
-                <input type="text" onDragEnter={callSearchFunction} onChange={handleSearchInputChanges}
-                       value={searchTerm} className="form-control" placeholder="Rechercher ..."
-                />
-            </form>
-            <ul className="bg-light text-dark">
-                {
-                    (searchTerm.length > 1) &&
-                    searchResults.map((item) => <li key={item.id}>{item.name} ({item.posts.length})</li>)
-                }
-            </ul>
 
             {itemsPerPage < totalItems && (<Pagination
                 currentPage={currentPage} itemsPerPage={itemsPerPage} length={totalItems} onPageChanged={handlePageChange}/>)
