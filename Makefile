@@ -46,31 +46,12 @@ stop:           ## Remove docker containers
 
 
 
-config:        ## Init files required
-	cp docker-compose.override.yml.dist docker-compose.override.yml
 
 install:          ## Install the whole project
-install: config start vendor doctrine_schema_create
+install: start vendor yarn doctrine_schema_create migrate
 
-rbdb:
-	$(FIG) stop db
-	sudo rm -r var/db
-	sudo tar -zxf var/db.tar.gz var/db
-	$(FIG) start db
-
-rbdbbr:
-	$(FIG) stop db
-	sudo tar -zxf var/db-bk-$(BRANCH_DIR).tar.gz var/db
-	$(FIG) start db
-
-bkdb:
-	sudo tar -zcf var/db.tar.gz var/db
-
-bkdbbr:
-	sudo tar -zcf "var/db-bk-$(BRANCH_DIR).tar.gz" var/db
-
-indb:
-	$(FIG) exec db mysql -umeetpro -pmeetpro meetpro
+doctrine_schema_create:
+	php $(CONSOLE)  doctrine:database:create
 
 inphp:
 	$(FIG) exec php bash
@@ -88,11 +69,12 @@ encore-watch:
 ## END Docker
 ##---------------------------------------------------------------------------
 
-run:
-	php $(CONSOLE) server:run
-
 vendor:           ## Vendors
 	$(RUN) php composer install
+
+
+yarn:           ## Webpack
+	yarn install
 
 clear:
 	composer dump-autoload
@@ -113,49 +95,14 @@ db-empty:
 	bin/console doctrine:database:create --env=$(env)
 	bin/console doctrine:schema:update --force --env=$(env)
 
-fixtures_load:
+fixture:
 	bin/console doctrine:fixtures:load --no-interaction --env=$(env)
-fixture: fixtures_load
-fixtures: fixtures_load
-
-search_settings:
-	bin/console app:algolia:settings --env=$(env)
-
-search_index:
-	bin/console app:algolia:indexer --env=$(env)
-
-search_clear_index:
-	bin/console app:algolia:clear --env=$(env)
-
-search_reload: search_clear_index search_settings search_index
-index_reload:	search_settings search_clear_index search_index
-
-data_reload: fixtures_load search_clear_index search_index
-
-dev_reload: doctrine_schema search_settings fixtures_load search_clear_index search_index
-
-#generate_migration:
-#	sed -i "s/database_name: meetpro/database_name: meetpro_mig/g" app/config/parameters.yml
-#	bin/console doctrine:mig:mig -n
-#	bin/console doctrine:mig:diff
-#	sed -i "s/database_name: meetpro_mig/database_name: meetpro/g" app/config/parameters.yml
 
 migdiff:
 	bin/console doctrine:mig:diff
 
 migrate:
 	bin/console doctrine:migrations:migrate --no-interaction
-
-php_git_hooks:
-	cp vendor/bruli/php-git-hooks/src/PhpGitHooks/Infrastructure/Hook/pre-commit .git/hooks
-	cp vendor/bruli/php-git-hooks/src/PhpGitHooks/Infrastructure/Hook/commit-msg .git/hooks
-	cp vendor/bruli/php-git-hooks/src/PhpGitHooks/Infrastructure/Hook/pre-push .git/hooks
-
-generate:
-	bin/console app:advert:generate -u $(user) -t $(type) -a1
-
-super: #make super user=admin@meetpro.fr
-	bin/console fos:user:promote --super ${user}
 
 ##
 ## Dump current DataBase
@@ -164,9 +111,3 @@ super: #make super user=admin@meetpro.fr
 dump_bd:
 	bin/console database:dump
 
-users:
-	bin/console doctrine:fixtures:load --group=users --append
-
-db-fixtures:
-	bin/console database:load:fixtures
-	bin/console doctrine:fixtures:load --group=users --append
