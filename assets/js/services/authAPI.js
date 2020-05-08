@@ -1,5 +1,6 @@
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
+import {toast} from "react-toastify";
 
 /**
  * Requete d'authentification et stockage + token et header
@@ -13,7 +14,18 @@ function authenticate(credentials) {
         .then(token => {
             // on stocke le token dans le localStorage
             window.localStorage.setItem("authToken", token);
-            // On prévient Axios qu'on a un header par default  sur toutes nos futures requetes HTTP
+            const currentUser = jwtDecode(token)
+            // console.log(currentUser)
+            window.localStorage.setItem("currentUser", JSON.stringify({
+                id: currentUser.id,
+                isActive: currentUser.isActive,
+                isAdmin: currentUser.isAdmin,
+                name: currentUser.name,
+                roles: currentUser.roles,
+                username: currentUser.username
+            }));
+
+            // On prévient Axios qu'on a un header par default  sur toutes nos futures requêtes HTTP
             setAxiosToken(token);
             return true;
         });
@@ -25,6 +37,8 @@ function authenticate(credentials) {
 function logout() {
     window.localStorage.removeItem('authToken');
     delete axios.defaults.headers['Authorization'];
+    toast.info('🦄Vous êtes déconnecté');
+
 }
 
 /**

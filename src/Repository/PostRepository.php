@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Post;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,32 +20,66 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
-    // /**
-    //  * @return Post[] Returns an array of Post objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function getPostFeelingAngryByUser(User $user)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $query = $this->createQueryBuilder('p')
+            ->select('p')
+            ->leftJoin('p.feelingAngry', 'fa')
+            ->addSelect('fa');
 
-    /*
-    public function findOneBySomeField($value): ?Post
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
+        $query = $query->add('where', $query->expr()->in('fa', ':fa'))
+            ->setParameter('fa', $user)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getResult();
+
+        return $query;
+
+
     }
-    */
+
+    public function getPostFeelingBoredByUser(User $user)
+    {
+        $query = $this->createQueryBuilder('p')
+            ->select('p')
+            ->leftJoin('p.feelingBored', 'fa')
+            ->addSelect('fa');
+
+        $query = $query->add('where', $query->expr()->in('fa', ':fa'))
+            ->setParameter('fa', $user)
+            ->getQuery()
+            ->getResult();
+
+        return $query;
+    }
+
+    public function getPostFeelingSillyByUser(User $user)
+    {
+        $query = $this->createQueryBuilder('p')
+            ->select('p')
+            ->leftJoin('p.feelingSilly', 'fa')
+            ->addSelect('fa');
+
+        $query = $query->add('where', $query->expr()->in('fa', ':fa'))
+            ->setParameter('fa', $user)
+            ->getQuery()
+            ->getResult();
+
+        return $query;
+    }
+
+    public function getPostFeelingScaryByUser(User $user)
+    {
+        $query = $this->createQueryBuilder('p')
+            ->select('p')
+            ->leftJoin('p.feelingScary', 'fa')
+            ->addSelect('fa');
+
+        $query = $query->add('where', $query->expr()->in('fa', ':fa'))
+            ->setParameter('fa', $user)
+            ->getQuery()
+            ->getResult();
+
+        return $query;
+    }
+
 }

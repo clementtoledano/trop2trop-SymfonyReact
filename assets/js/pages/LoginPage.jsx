@@ -2,13 +2,14 @@ import React, {useContext, useState} from 'react';
 import AuthAPI from "../services/authAPI";
 import AuthContext from "../contexts/AuthContext";
 import Field from "../components/forms/Field";
+import {toast} from "react-toastify";
 
 const LoginPage = ({history}) => {
     const {setIsAuthenticated} = useContext(AuthContext)
 
     const [credentials, setCredentials] = useState({
         username: 'aze@aze.aze',
-        password: 'azeqsdaze'
+        password: 'azeazeaze'
     });
 
     const [error, setError] = useState("");
@@ -26,9 +27,12 @@ const LoginPage = ({history}) => {
             await AuthAPI.authenticate(credentials)
             setError("");
             setIsAuthenticated(true)
+            toast.success('🦄Connexion réussi !');
             history.replace("/posts")
         } catch (e) {
             setError(e.response.data.message)
+            toast.error("Erreur de connexion")
+
         }
     }
 

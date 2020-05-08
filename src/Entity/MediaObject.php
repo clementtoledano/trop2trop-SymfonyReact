@@ -58,7 +58,7 @@ class MediaObject
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      * @ORM\Id
-     * @Groups({"media_object_read","user:read"})
+     * @Groups({"media_object_read","user:read","post:read"})
      */
     protected $id;
 
@@ -66,7 +66,7 @@ class MediaObject
      * @var string|null
      *
      * @ApiProperty(iri="http://schema.org/contentUrl")
-     * @Groups({"media_object_read","user:read"})
+     * @Groups({"media_object_read","user:read","post:read"})
      */
     public $contentUrl;
 
@@ -82,9 +82,17 @@ class MediaObject
      * @var string|null
      *
      * @ORM\Column(nullable=true)
-     * @Groups({"user:read"})
+     * @Groups({"user:read","post:read"})
      */
     public $filePath;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Post", mappedBy="image")
+     *
+     */
+    private $post;
+
+
 
     public function getId(): ?int
     {
@@ -97,6 +105,22 @@ class MediaObject
     public function getContentUrl(): ?string
     {
         return $this->contentUrl;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPost()
+    {
+        return $this->post;
+    }
+
+    /**
+     * @param mixed $post
+     */
+    public function setPost($post): void
+    {
+        $this->post = $post;
     }
 
 

@@ -17,7 +17,7 @@ class PostDateTimeSubscriber implements EventSubscriberInterface
     {
         return [
             KernelEvents::VIEW =>
-                ['setDateTimeForPost', EventPriorities::PRE_VALIDATE]
+                ['setDateTimeForPost', EventPriorities::PRE_WRITE]
         ];
 
     }

@@ -15,15 +15,9 @@ const InputSearch = ({theSearchResults, theCurrentPage}) => {
         theCurrentPage(1)
         setClosed(false)
     };
-    //
-    // const resetInputField = () => {
-    //     setSearchTerm('')
-    //     setSearchResults([])
-    //     setClosed(true)
-    // }
 
     const callSearchFunction = (e) => {
-        if(e.key === 'Enter'){
+        if (e.key === 'Enter') {
             const value = e.currentTarget.value;
             setSearchTerm(value)
             setSearchTerm("")
@@ -54,17 +48,19 @@ const InputSearch = ({theSearchResults, theCurrentPage}) => {
         setClosed(true)
     }
 
-    return(
+    return (
         <div className="autocomplete">
             <input type="text" onKeyPress={callSearchFunction} onChange={handleSearchInputChanges}
                    value={searchTerm} className="form-control" placeholder="Rechercher un #hashtag"
             />
             <div className={"autocomplete-items " + (closed && "d-none")}>
                 {(searchTerm.length > 1) &&
-                searchResults.map((item) => <div key={item.id} onClick={persistAndClosed.bind(this, item)}>{item.name} ({item.posts.length})</div>)
+                searchResults.map((item) =>
+                    (item.posts.length > 0) &&
+                    (<div key={item.id} onClick={persistAndClosed.bind(this, item)}>{item.name} ({item.posts.length})</div>)
+                )
                 }
             </div>
-
         </div>
     );
 };

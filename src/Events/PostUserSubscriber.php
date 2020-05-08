@@ -27,7 +27,7 @@ class PostUserSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::VIEW => ['setUserForPost', EventPriorities::PRE_VALIDATE]
+            KernelEvents::VIEW => ['setUserForPost', EventPriorities::PRE_WRITE]
         ];
     }
 

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Field from "../components/forms/Field";
-import AuthAPI from "../services/authAPI";
 import usersAPI from "../services/usersAPI";
+import {toast} from "react-toastify";
 
 const SubscribePage = ({history}) => {
     const [user, setUser] = useState({
@@ -27,10 +27,19 @@ const SubscribePage = ({history}) => {
         event.preventDefault();
         try {
             await usersAPI.create(user)
-            setErrors([]);
-            // history.replace("/posts")
+            setErrors({});
+            toast.success('🦄Compte créé !');
+            history.replace("/posts")
         } catch (e) {
-            console.log(e.response)
+            if(e.response.data.violations){
+                const apiErrors = {};
+                e.response.data.violations.map(violation => {
+                    apiErrors[violation.propertyPath] = violation.message;
+                })
+                setErrors(apiErrors)
+                toast.error("Erreur pendant la création")
+
+            }
         }
     }
 

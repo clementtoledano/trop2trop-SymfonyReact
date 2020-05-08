@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -32,13 +33,13 @@ class Post
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("post:read")
+     * @Groups({"post:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="text")z
-     * @Groups("post:read")
+     * @Groups({"post:read"})
      * @Assert\NotBlank(message="le contenu est obligatoire")
      * @Assert\Length(min="10", minMessage="le pseudo doit faire au moins 10 caractères", max="141", maxMessage="le pseudo doit faire au maximum 141 caractères")
      */
@@ -46,13 +47,13 @@ class Post
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups("post:read")
+     * @Groups({"post:read"})
      */
     private $isActive;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups("post:read")
+     * @Groups({"post:read"})
      * @Assert\Type("datetime", message="la date doit etre au format YYYY-MM-DD")
      * @Assert\NotBlank(message="la date de creation est obligatoire")
      */
@@ -60,21 +61,18 @@ class Post
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups("post:read")
+     * @Groups({"post:read"})
      * @Assert\Type("datetime", message="la date doit etre au format YYYY-MM-DD")
      */
     private $updateAt;
 
-//    /**
-//     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="posts")
-//     * @Groups("post:read")
-//     * @Assert\NotBlank(message="la categorie est obligatoire")
-//     */
-//    private $category;
-
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Image", mappedBy="post", cascade={"persist", "remove"})
-     * @Groups("post:read")
+     * @var MediaObject|null
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\MediaObject", inversedBy="post", cascade={"persist", "remove"})
+     * @Groups({"post:read"})
+     * @ORM\JoinColumn(nullable=false)
+     * @ApiProperty(iri="http://schema.org/image")
      * @Assert\NotBlank(message="l'image est obligatoire")
      */
     private $image;
@@ -118,14 +116,18 @@ class Post
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="posts")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups("post:read")
+     * @Groups({"post:read"})
      * @Assert\NotBlank(message="le user est obligatoire")
      */
     private $user;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Hashtag", mappedBy="posts")
-     * @Groups("post:read")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Hashtag", inversedBy="posts", cascade={"all"}, fetch="EAGER")
+     * @Groups({"post:read"})
+     * @JoinTable(name="post_hashtag",
+     *      joinColumns={@JoinColumn(name="post_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="hashtag_id", referencedColumnName="id")}
+     *      )
      */
     private $hashtags;
 
@@ -146,6 +148,7 @@ class Post
         return count($this->feelingSilly);
     }
 
+
     /**
      * @return int
      * @Groups("post:read")
@@ -153,6 +156,7 @@ class Post
     public function getTotalFeelingAngry(): int {
         return count($this->feelingAngry);
     }
+
     /**
      * @return int
      * @Groups("post:read")
@@ -160,6 +164,7 @@ class Post
     public function getTotalFeelingBored(): int {
         return count($this->feelingBored);
     }
+
     /**
      * @return int
      * @Groups("post:read")
@@ -221,22 +226,22 @@ class Post
         return $this;
     }
 
-    public function getImage(): ?Image
+    /**
+     * @return mixed
+     */
+    public function getImage()
     {
         return $this->image;
     }
 
-    public function setImage(Image $image): self
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image): void
     {
         $this->image = $image;
-
-        // set the owning side of the relation if necessary
-        if ($image->getPost() !== $this) {
-            $image->setPost($this);
-        }
-
-        return $this;
     }
+
 
     /**
      * @return Collection|User[]
@@ -381,6 +386,33 @@ class Post
 
         return $this;
     }
+
+
+    /**
+     * @Groups("post:read")
+     */
+    public function getUserFeelingAngry() {
+        return $this->getFeelingAngry();
+    }
+    /**
+     * @Groups("post:read")
+     */
+    public function getUserFeelingBored() {
+        return $this->getFeelingBored();
+    }
+    /**
+     * @Groups("post:read")
+     */
+    public function getUserFeelingSilly() {
+        return $this->getFeelingSilly();
+    }
+    /**
+     * @Groups("post:read")
+     */
+    public function getUserFeelingScary() {
+        return $this->getFeelingScary();
+    }
+
 
 
 }

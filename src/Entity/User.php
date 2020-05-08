@@ -51,6 +51,7 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\Length(min="8", minMessage="le mot de passe doit faire au moins 3 caractères", max="20", maxMessage="le mot de passe doit faire au maximum 20 caractères")
      * @Assert\NotBlank(message="le password est obligatoire")
      */
     private $password;
@@ -85,8 +86,8 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"post:read","user:read"})
-     * @Assert\NotBlank(message="le pseudo est obligatoire")
      * @Assert\Length(min="3", minMessage="le pseudo doit faire au moins 3 caractères", max="20", maxMessage="le pseudo doit faire au maximum 20 caractères")
+     * @Assert\NotBlank(message="le pseudo est obligatoire")
      */
     private $name;
 
