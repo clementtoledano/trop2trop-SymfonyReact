@@ -1,4 +1,3 @@
-FIG=docker-compose
 RUN=
 EXEC=
 CONSOLE=bin/console
@@ -25,36 +24,18 @@ help:
 	@echo "  dev_reload   clear cache, reload database schema and load fixtures (only for dev environment)"
 
 
-##
-## Docker
-##---------------------------------------------------------------------------
+run :
+	symfony local:server:start --allow-http
 
-start:          ## Install and start the project
-start: build up
-build:
-	$(FIG) build
-
-up:
-	$(FIG) up -d --remove-orphans
-
-reset:          ## Reset the whole project
-reset: stop start
-
-stop:           ## Remove docker containers
-	$(FIG) kill
-	$(FIG) rm -v --force
-
-
-
+open:
+	symfony open:local
 
 install:          ## Install the whole project
-install: start vendor yarn doctrine_schema_create migrate
+install: vendor yarn doctrine_schema_create migrate
 
 doctrine_schema_create:
 	php $(CONSOLE)  doctrine:database:create
 
-inphp:
-	$(FIG) exec php bash
 
 encore-dev:
 	$(FIG) run node yarn encore dev

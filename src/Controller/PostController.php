@@ -41,7 +41,6 @@ class PostController extends AbstractController
                         $theTag = new Hashtag();
                         $theTag->setName($tag);
                         $manager->persist($theTag);
-
                     }
                     $newPost->addHashtag($theTag);
                 }, $tags);
@@ -70,32 +69,28 @@ class PostController extends AbstractController
      * @param $id
      * @param Request $request
      * @param EntityManagerInterface $manager
-     * @param Security $security
      * @return JsonResponse|null
      */
     public function update($id, Request $request, EntityManagerInterface $manager): ?JsonResponse
     {
         $thePost = json_decode($request->getContent(), true);
-//        dd($thePost);
         try {
             $oldPost = $manager->getRepository(Post::class)->find($id);
-//            dd($oldPost);
             if (isset($thePost['hashtags'])) {
                 $theOldTags = $oldPost->getHashtags();
-//                dd($theOldTags);
                 foreach ($theOldTags as $oldTag) {
                     $oldPost->removeHashtag($oldTag);
                 }
                 $tags = $thePost['hashtags'];
                 array_map(static function ($tag) use ($oldPost, $manager) {
-                    if ($tag !== ""){
-                    $theTag = $manager->getRepository(Hashtag::class)->findOneBy(['name' => $tag]);
-                    if ($theTag === null) {
-                        $theTag = new Hashtag();
-                        $theTag->setName($tag);
-                        $manager->persist($theTag);
-                    }
-                    $oldPost->addHashtag($theTag);
+                    if ($tag !== "") {
+                        $theTag = $manager->getRepository(Hashtag::class)->findOneBy(['name' => $tag]);
+                        if ($theTag === null) {
+                            $theTag = new Hashtag();
+                            $theTag->setName($tag);
+                            $manager->persist($theTag);
+                        }
+                        $oldPost->addHashtag($theTag);
                     }
                 }, $tags);
             }

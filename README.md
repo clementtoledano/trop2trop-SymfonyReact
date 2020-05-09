@@ -6,11 +6,9 @@
       make install
 
 ## Pour lancer :
-    make start && make encore-run
+    make run
 
 
 le site : http://localhost:8000/
 
 api platform : http://localhost:8000/api
-
-phpmyadmin : http://localhost:9000/

@@ -5,9 +5,9 @@ import {toast} from "react-toastify";
 
 const SubscribePage = ({history}) => {
     const [user, setUser] = useState({
-        name: 'tulyp',
-        email: 'tulyp@aze.aze',
-        password: 'azeqsdaze'
+        name: 'azeazeaze',
+        email: 'aze@aze.aze',
+        password: 'azeazeaze'
     });
 
     const [errors, setErrors] = useState({
@@ -31,13 +31,13 @@ const SubscribePage = ({history}) => {
             toast.success('🦄Compte créé !');
             history.replace("/posts")
         } catch (e) {
+                toast.error("Erreur pendant la création")
             if(e.response.data.violations){
                 const apiErrors = {};
                 e.response.data.violations.map(violation => {
                     apiErrors[violation.propertyPath] = violation.message;
                 })
                 setErrors(apiErrors)
-                toast.error("Erreur pendant la création")
 
             }
         }
