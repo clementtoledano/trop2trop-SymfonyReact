@@ -19,64 +19,47 @@ endif
 
 export SYMFONY_ENV=$(env)
 
-help:
-	@echo "Please use \`make <target>' where <target> is one of"
-	@echo "  dev_reload   clear cache, reload database schema and load fixtures (only for dev environment)"
 
 
-run :
+## Install the whole project
+install: vendor yarn create_database migrate
+#############################################################
+run :    ## Start Symfony server
 	symfony local:server:start --allow-http
 
-open:
-	symfony open:local
+encore-run:     ## Start webpack encore
+	yarn encore dev-server --port 8080 --disable-host-check
 
-install:          ## Install the whole project
-install: vendor yarn doctrine_schema_create migrate
-
-doctrine_schema_create:
+#############################################################
+create_database:
 	php $(CONSOLE)  doctrine:database:create
-
-
-encore-dev:
-	$(FIG) run node yarn encore dev
-
-encore-run:
-	$(FIG) run -p8080:8080 node yarn encore dev-server --host 0.0.0.0 --hot --disable-host-check --port 8080
-
-encore-watch:
-	$(FIG) run node yarn encore dev --watch --disable-host-check --port 8080
-
-##
-## END Docker
-##---------------------------------------------------------------------------
 
 vendor:           ## Vendors
 	$(RUN) php composer install
 
-
 yarn:           ## Webpack
 	yarn install
 
-clear:
+clear:    ## Symfony cache clear
 	composer dump-autoload
 	bin/console cache:clear --env=$(env)
 
-doctrine_schema:
-	bin/console doctrine:cache:clear-metadata --env=$(env)
-	bin/console doctrine:cache:clear-query --env=$(env)
-	bin/console doctrine:cache:clear-result --env=$(env)
-	bin/console doctrine:database:drop --force --env=$(env)
-	bin/console doctrine:database:create --env=$(env)
-	bin/console doctrine:m:m --no-interaction --env=$(env)
+#doctrine_schema:
+#	bin/console doctrine:cache:clear-metadata --env=$(env)
+#	bin/console doctrine:cache:clear-query --env=$(env)
+#	bin/console doctrine:cache:clear-result --env=$(env)
+#	bin/console doctrine:database:drop --force --env=$(env)
+#	bin/console doctrine:database:create --env=$(env)
+#	bin/console doctrine:m:m --no-interaction --env=$(env)
+#
+#db: doctrine_schema
 
-db: doctrine_schema
-
-db-empty:
+db-empty: ## clear database
 	bin/console doctrine:database:drop --force --env=$(env)
 	bin/console doctrine:database:create --env=$(env)
 	bin/console doctrine:schema:update --force --env=$(env)
 
-fixture:
+fixture:  ##
 	bin/console doctrine:fixtures:load --no-interaction --env=$(env)
 
 migdiff:
@@ -88,7 +71,6 @@ migrate:
 ##
 ## Dump current DataBase
 ##---------------------------------------------------------------------------
-
 dump_bd:
 	bin/console database:dump
 

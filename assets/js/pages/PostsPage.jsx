@@ -55,35 +55,16 @@ const PostsPage = () => {
 
         }
     }
-    // const fetchFeelings = async () => {
-    //     try {
-    //         const biatch = await HashtagsAPI.findFeelingByUser(JSON.parse(localStorage.currentUser).id);
-    //         console.log(biatch)
-    //     } catch (error) {
-    //         console.log(error.response)
-    //     }
-    // }
-
 
     const handlePageChange = page => {
         setCurrentPage(page);
         setLoading(true);
     };
 
-    // const handleTopTags = (tag, event) => {
-    //     console.log(tag, event)
-    //     setSearchResults(tag)
-    //     fetchPosts()
-    // }
 
     const hashtagList = {
         cursor: "pointer"
     };
-
-    // const imageView = ({target}) => {
-    //     console.log(target.src)
-    //
-    // };
 
     const [thePost, setThePost] = useState([]);
     const [postKey, setPostKey] = useState(null);
@@ -220,8 +201,13 @@ const PostsPage = () => {
             <div className="card text-white bg-primary mt-3">
                 <div className="card-header">TOP - TROP DE TROP</div>
                 <div className="card-body">
-
-                    <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#">les plus trop de trop</a>
+                    <br/>
+                    <a href="#">les moins trop de trop</a>
+                    <br/>
+                    <a href="#">les plus fou</a>
+                    <br/>
+                    <a href="#">les plus flippant</a>
                 </div>
             </div>
         </aside>

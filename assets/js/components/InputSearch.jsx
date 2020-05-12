@@ -12,6 +12,7 @@ const InputSearch = ({theSearchResults, theCurrentPage}) => {
 
     const handleSearchInputChanges = ({currentTarget}) => {
         setSearchTerm(currentTarget.value)
+
         theCurrentPage(1)
         setClosed(false)
     };
@@ -29,7 +30,7 @@ const InputSearch = ({theSearchResults, theCurrentPage}) => {
         if (searchTerm.length > 1) {
             try {
                 const search = await HashtagsAPI.findAll()
-                const results = search.filter(tag =>
+                const results = await search.filter(tag =>
                     tag.name.toLowerCase().includes(searchTerm.toLowerCase().trim(), 0)
                 );
                 setSearchResults(results);
@@ -42,15 +43,20 @@ const InputSearch = ({theSearchResults, theCurrentPage}) => {
         }
     };
 
-    function persistAndClosed(value) {
+    const persistAndClosed = value => {
         setSearchTerm("")
         theSearchResults([value]);
+        setClosed(true)
+    }
+
+    const handleTouch = () => {
         setClosed(true)
     }
 
     return (
         <div className="autocomplete">
             <input type="text" onKeyPress={callSearchFunction} onChange={handleSearchInputChanges}
+                   onBlur={handleTouch}
                    value={searchTerm} className="form-control" placeholder="Rechercher un #hashtag"
             />
             <div className={"autocomplete-items " + (closed && "d-none")}>

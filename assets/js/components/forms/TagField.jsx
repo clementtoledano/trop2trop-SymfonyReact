@@ -51,7 +51,9 @@ const TagField = React.memo(({name, tag, onAddHashtag, placeholder, error = ""})
         setClosed(true)
 
     }
-
+    const handleTouch = () => {
+        setClosed(true)
+    }
     const search = async () => {
 
         try {
@@ -70,6 +72,7 @@ const TagField = React.memo(({name, tag, onAddHashtag, placeholder, error = ""})
         <div className="form-group">
             <div className="autocomplete">
                 <input name={name}
+                       onBlur={handleTouch}
                        type="text"
                        value={hashtagSearchTerm}
                        onKeyPress={callSearchFunction}

@@ -6,7 +6,9 @@
       make install
 
 ## Pour lancer :
-    make run
+    make run 
+   
+    make encore-dev
 
 
 le site : http://localhost:8000/
