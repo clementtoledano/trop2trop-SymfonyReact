@@ -46,27 +46,35 @@ const PostEditPage = React.memo(({history, match}) => {
 
     const handleSubmit = async event => {
         event.preventDefault();
-
-        try {
-            setErrors({});
-            if (editing) {
+        if (editing) {
+            try {
                 await PostsAPI.update({
                     content: post.content,
                     hashtags: post.hashtags
                 }, id)
+                setErrors({});
                 toast.success('🦄Post mis a jour !');
-            } else {
-                await PostsAPI.create(post)
-                toast.success('🦄Post créé !');
-                history.replace("/posts")
+                history.replace("/account-posts")
+            } catch (error) {
+                toast.error("Erreur pendant l'édition")
             }
-        } catch (error) {
-            toast.error("Erreur pendant la création")
+        } else {
+            if (post.image[0]){
+                try {
+                    await PostsAPI.create(post)
+                    toast.success('🦄Post créé !');
+                    setErrors({});
+                    history.replace("/account-posts")
+                } catch (error) {
+                    toast.error("Erreur pendant la création")
+                }
+            }
+
         }
     }
 
-    const onChange = imageList => {
-        setPost({...post, image: imageList})
+    const handleImageChange = async imageList => {
+       await setPost({...post, image: imageList})
     };
 
     function handleChange({target}) {
@@ -156,13 +164,14 @@ const PostEditPage = React.memo(({history, match}) => {
                 />
                 {errors && <p className={"invalid-feedback"}>{errors.content}</p>}
             </div>
-            {!editing && <ImageUploading onChange={onChange}
+        </form>
+            {!editing && <ImageUploading onChange={handleImageChange}
                                          maxFileSize={maxMbFileSize}
                                          acceptType={["jpg", "gif", "png"]}
             >
                 {({imageList, onImageUpload, onImageRemoveAll, errors}) => (
                     <div className="upload__image-wrapper">
-                        <button type="button" className={"btn btn-dark"} onClick={onImageUpload}>Upload image</button>
+                        <button className={"btn btn-dark"} onClick={onImageUpload}>Upload image</button>
                         &nbsp;
                         <button className={"btn btn-dark"} onClick={onImageRemoveAll}>Remove image</button>
                         {imageList.map(image => (
@@ -178,7 +187,6 @@ const PostEditPage = React.memo(({history, match}) => {
                     </div>
                 )}
             </ImageUploading> || <img src={"http://localhost:8000/media/" + post.image.filePath} alt=""/>}
-        </form>
     </div>);
 });
 

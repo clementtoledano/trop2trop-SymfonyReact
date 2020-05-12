@@ -32,7 +32,6 @@ const LoginPage = ({history}) => {
         } catch (e) {
             setError(e.response.data.message)
             toast.error("Erreur de connexion")
-
         }
     }
 

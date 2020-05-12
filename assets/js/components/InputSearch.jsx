@@ -7,21 +7,21 @@ const InputSearch = ({theSearchResults, theCurrentPage}) => {
     const [closed, setClosed] = useState(true);
 
     useEffect(() => {
-        searchTerm && search(searchTerm)
+        if (searchTerm.length >1) searchTerm && search(searchTerm)
     }, [searchTerm])
 
     const handleSearchInputChanges = ({currentTarget}) => {
+        console.log('handleSearchInputChanges')
         setSearchTerm(currentTarget.value)
-
         theCurrentPage(1)
         setClosed(false)
     };
 
-    const callSearchFunction = (e) => {
-        if (e.key === 'Enter') {
-            const value = e.currentTarget.value;
-            setSearchTerm(value)
-            setSearchTerm("")
+    const handleKeyEnterPress = (event) => {
+        if (event.key === 'Enter') {
+            const value = event.currentTarget.value;
+            // setSearchTerm(value)
+            setSearchTerm(searchResults[0] && searchResults[0].name || value )
             setClosed(true)
         }
     }
@@ -44,8 +44,8 @@ const InputSearch = ({theSearchResults, theCurrentPage}) => {
     };
 
     const persistAndClosed = value => {
-        setSearchTerm("")
         theSearchResults([value]);
+        setSearchTerm("")
         setClosed(true)
     }
 
@@ -55,8 +55,9 @@ const InputSearch = ({theSearchResults, theCurrentPage}) => {
 
     return (
         <div className="autocomplete">
-            <input type="text" onKeyPress={callSearchFunction} onChange={handleSearchInputChanges}
+            <input type="text" onKeyPress={handleKeyEnterPress} onChange={handleSearchInputChanges}
                    onBlur={handleTouch}
+                   autoComplete="off"
                    value={searchTerm} className="form-control" placeholder="Rechercher un #hashtag"
             />
             <div className={"autocomplete-items " + (closed && "d-none")}>

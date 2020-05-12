@@ -3,7 +3,7 @@ import PostsAPI from "../services/postsAPI";
 import {toast} from "react-toastify";
 import {NavLink} from "react-router-dom";
 
-const AccountPostsPage = ({history}) => {
+const AccountPostsPage = () => {
 
     const [posts, setPosts] = useState([]);
 
@@ -13,18 +13,19 @@ const AccountPostsPage = ({history}) => {
 
     const fetchPosts = async () => {
         try {
-            const posts = await PostsAPI.findByUser()
-            setPosts(posts);
+            setPosts(await PostsAPI.findByUser());
         } catch (e) {
             console.log(e.response)
         }
     }
 
-    const deletePost = (postId) => {
+    const deletePost = async (postId) => {
+
         try {
-            PostsAPI.deletePost(postId)
+            const newPosts = [...posts].filter(post => post.id !== postId);
+            setPosts(newPosts)
+            await PostsAPI.deletePost(postId)
             toast.success('🦄Post supprimé !');
-            history.replace("/posts")
         } catch (e) {
             console.log(e.response)
             toast.error('🦄Erreur pendant la suppression!');

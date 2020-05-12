@@ -73,7 +73,7 @@ class MediaObject
     /**
      * @var File|null
      *
-     * @Assert\NotNull(groups={"media_object_create"})
+     * @Assert\NotNull(groups={"media_object_create"}, message="une image est obligatoire")
      * @Vich\UploadableField(mapping="media_object", fileNameProperty="filePath")
      */
     public $file;

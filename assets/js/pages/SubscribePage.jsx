@@ -23,12 +23,12 @@ const SubscribePage = ({history}) => {
     }
 
     // Gestion du submit
-    const handleSubmit = async (event) => {
+    const handleSubmit = async event => {
         event.preventDefault();
         try {
             await usersAPI.create(user)
-            setErrors({});
             toast.success('🦄Compte créé !');
+            setErrors({});
             history.replace("/posts")
         } catch (e) {
                 toast.error("Erreur pendant la création")

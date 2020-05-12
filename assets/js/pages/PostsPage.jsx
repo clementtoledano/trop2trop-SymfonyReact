@@ -34,6 +34,8 @@ const PostsPage = () => {
     }, [buttonFeeling])
 
     const fetchPosts = async () => {
+        console.log('[PostsPage] fetchPost')
+
         try {
             const {data} = await PostsAPI.findAll(itemsPerPage, currentPage, searchResults)
             setLoading(false);

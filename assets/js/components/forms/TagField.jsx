@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import HashtagsAPI from "../../services/hashtagsAPI";
 
 
-const TagField = React.memo(({name, tag, onAddHashtag, placeholder, error = ""}) => {
+const TagField = ({name, tag, onAddHashtag, placeholder, error = ""}) => {
     const [hashtagSearchTerm, setHashtagSearchTerm] = useState("");
     const [hashtagSearchResults, setHashtagSearchResults] = useState([]);
     const [closed, setClosed] = useState(true);
@@ -12,50 +12,46 @@ const TagField = React.memo(({name, tag, onAddHashtag, placeholder, error = ""})
     }, [tag]);
 
     useEffect(() => {
-        hashtagSearchTerm && search(hashtagSearchTerm)
+        if (hashtagSearchTerm.length > 1) hashtagSearchTerm && search(hashtagSearchTerm)
     }, [hashtagSearchTerm]);
 
     const sendTag = (tag) => {
-       onAddHashtag(tag)
+        onAddHashtag(tag)
     }
 
     const handleSearchInputChanges = ({target}) => {
-        // console.log(target.value.length)
-        setHashtagSearchTerm(target.value)
-       // if (target.value.length < 2) {
-       //     // setHashtagSearchTerm("")
-       //     sendTag("")
-       // }else{
-           sendTag(target.value)
-       // }
-        setClosed(false)
+        console.log('[ handleSearchInputChanges ]' + target)
 
+        setHashtagSearchTerm(target.value)
+        sendTag(target.value)
+        setClosed(false)
     };
 
-    const callSearchFunction = ({target}) => {
-        if (target.key === 'Enter') {
-            target.preventDefault();
-            setHashtagSearchTerm(target.value)
-            sendTag(target.value)
+    const handleKeyEnterPress = event => {
+        console.log('[ handleKeyEnterPress ]' + event)
 
-            // theHashtag(value);
+        const {key, value} = event.target
+        if (key === 'Enter') {
+            setHashtagSearchTerm(hashtagSearchResults[0] && hashtagSearchResults[0].name || value)
+            sendTag(value)
             setClosed(true)
         }
     }
 
-    function persistAndClosed(value) {
+    const persistAndClosed = value => {
+        console.log('[ persistAndClosed ]' + value)
         setHashtagSearchTerm(value.name)
         sendTag(value.name)
-
-        // theHashtag(value.name);
         setClosed(true)
-
     }
+
     const handleTouch = () => {
-        setClosed(true)
+        setTimeout(() => {
+            setClosed(true)
+        }, 100);
     }
-    const search = async () => {
 
+    const search = async () => {
         try {
             const search = await HashtagsAPI.findAll()
             const results = search.filter(tag =>
@@ -72,25 +68,25 @@ const TagField = React.memo(({name, tag, onAddHashtag, placeholder, error = ""})
         <div className="form-group">
             <div className="autocomplete">
                 <input name={name}
-                       onBlur={handleTouch}
+                       autoComplete="off"
                        type="text"
                        value={hashtagSearchTerm}
-                       onKeyPress={callSearchFunction}
+                       onKeyPress={handleKeyEnterPress}
                        onChange={handleSearchInputChanges}
                        placeholder={placeholder}
                        className={"form-control" + (error && " is-invalid")}
+                       onBlur={handleTouch}
                 />
                 <div className={"autocomplete-items " + (closed && "d-none")}>
                     {(hashtagSearchTerm.length > 1) &&
-                    hashtagSearchResults.map((tag) =>
-                        (tag.posts.length > 0) &&
-                        (<div key={tag.id} onClick={persistAndClosed.bind(this, tag)}>{tag.name} ({tag.posts.length})</div>)
-                    )
+                    hashtagSearchResults.map(tag =>
+                        (tag.posts.length > 2) &&
+                        (<div key={tag.id} onClick={() => persistAndClosed(tag)}>{tag.name} ({tag.posts.length})</div>))
                     }
                 </div>
             </div>
             {error && <p className={"invalid-feedback"}>{error.hashtag}</p>}
         </div>
     );
-});
+};
 export default TagField;
