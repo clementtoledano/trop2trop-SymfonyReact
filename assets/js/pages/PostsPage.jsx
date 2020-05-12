@@ -16,21 +16,35 @@ const PostsPage = () => {
     const [loading, setLoading] = useState(true);
     const [searchResults, setSearchResults] = useState([]);
 
-    const itemsPerPage = 5;
+    const itemsPerPage = 15;
     const [buttonFeeling, setButtonFeeling] = useState(false);
 
-    useEffect(() => {
+    useEffect(()=>{
+        console.log('1')
         fetchHashtags()
-        fetchPosts()
-    }, [currentPage, searchResults]);
+    }, [])
 
     useEffect(() => {
-        fetchPosts()
+        if (searchResults.length > 0) {
+            fetchPosts()
+        setCurrentPage(1);
+        };
+    }, [searchResults]);
+
+    useEffect(() => {
+            console.log('3', currentPage)
+        if (searchResults) {
+            fetchPosts()
+        }
     }, [currentPage]);
 
     useEffect(() => {
-        fetchPosts()
-        setButtonFeeling(false)
+
+        if (isAuthenticated) {
+            console.log('4')
+            fetchPosts()
+            setButtonFeeling(false)
+        }
     }, [buttonFeeling])
 
     const fetchPosts = async () => {
@@ -54,15 +68,14 @@ const PostsPage = () => {
             setHashtags(data);
         } catch (error) {
             console.log(error.response)
-
         }
     }
 
     const handlePageChange = page => {
+        console.log('handlePageChange')
         setCurrentPage(page);
         setLoading(true);
     };
-
 
     const hashtagList = {
         cursor: "pointer"
@@ -76,47 +89,42 @@ const PostsPage = () => {
         setThePost(post);
     };
 
-    const handleFeelingAngry = (post) => {
+    const handleFeelingAngry = async (post) => {
         setButtonFeeling(true)
-
-        PostsAPI.updatePostFeeling({
+        await PostsAPI.updatePostFeeling({
             "angry": true,
             "bored": false,
             "silly": false,
             "scared": false
         }, post.id)
     };
-    const handleFeelingBored = (post) => {
+    const handleFeelingBored = async (post) => {
         setButtonFeeling(true)
-
-        PostsAPI.updatePostFeeling({
+        await PostsAPI.updatePostFeeling({
             "angry": false,
             "bored": true,
             "silly": false,
             "scared": false
         }, post.id)
     };
-    const handleFeelingSilly = (post) => {
+    const handleFeelingSilly = async (post) => {
         setButtonFeeling(true)
-
-        PostsAPI.updatePostFeeling({
+        await PostsAPI.updatePostFeeling({
             "angry": false,
             "bored": false,
             "silly": true,
             "scared": false
         }, post.id)
     };
-    const handleFeelingScary = (post) => {
+    const handleFeelingScary = async (post) => {
         setButtonFeeling(true)
-
-        PostsAPI.updatePostFeeling({
+        await PostsAPI.updatePostFeeling({
             "angry": false,
             "bored": false,
             "silly": false,
             "scared": true
         }, post.id)
     };
-
 
     return (<div className={"row"}>
         {(postKey === thePost.id) && (
@@ -142,7 +150,6 @@ const PostsPage = () => {
                          className={"image-post"} src={"http://localhost:8000/media/" + post.image.filePath} alt="Card image"/>
                 </div>
 
-
                 <div className="card-body">
                     {post.hashtags.map(hashtag => <span style={hashtagList} key={hashtag.id} className="card-link">
                         <a onClick={() => setSearchResults([hashtag])}>#{hashtag.name}</a>
@@ -164,7 +171,6 @@ const PostsPage = () => {
                     </button>
                     <button
                         name="silly"
-
                         className={"btn mr-2 " + ((post.userFeelingSilly.filter(post => post.id === JSON.parse(localStorage.currentUser).id).length === 0) && "btn-dark" || "btn-light")}
                         onClick={handleFeelingSilly.bind(this, post)}>
                         &#129315; {(post.userFeelingSilly).length}
@@ -217,4 +223,4 @@ const PostsPage = () => {
 }
 
 
-export default React.memo(PostsPage);
+export default PostsPage;

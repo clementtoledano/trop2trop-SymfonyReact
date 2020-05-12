@@ -20,16 +20,12 @@ const TagField = ({name, tag, onAddHashtag, placeholder, error = ""}) => {
     }
 
     const handleSearchInputChanges = ({target}) => {
-        console.log('[ handleSearchInputChanges ]' + target)
-
         setHashtagSearchTerm(target.value)
         sendTag(target.value)
         setClosed(false)
     };
 
     const handleKeyEnterPress = event => {
-        console.log('[ handleKeyEnterPress ]' + event)
-
         const {key, value} = event.target
         if (key === 'Enter') {
             setHashtagSearchTerm(hashtagSearchResults[0] && hashtagSearchResults[0].name || value)
@@ -39,7 +35,6 @@ const TagField = ({name, tag, onAddHashtag, placeholder, error = ""}) => {
     }
 
     const persistAndClosed = value => {
-        console.log('[ persistAndClosed ]' + value)
         setHashtagSearchTerm(value.name)
         sendTag(value.name)
         setClosed(true)
@@ -48,7 +43,7 @@ const TagField = ({name, tag, onAddHashtag, placeholder, error = ""}) => {
     const handleTouch = () => {
         setTimeout(() => {
             setClosed(true)
-        }, 100);
+        }, 500);
     }
 
     const search = async () => {
@@ -61,12 +56,18 @@ const TagField = ({name, tag, onAddHashtag, placeholder, error = ""}) => {
         } catch (e) {
             console.log(e.response)
         }
-
     };
 
     return (
         <div className="form-group">
             <div className="autocomplete">
+                <div className={"autocomplete-items " + (closed && "d-none")}>
+                    {(hashtagSearchTerm.length > 1) &&
+                    hashtagSearchResults.map(tag =>
+                        (tag.posts.length > 2) &&
+                        (<div key={tag.id} onClick={() => persistAndClosed(tag)}>{tag.name} ({tag.posts.length})</div>))
+                    }
+                </div>
                 <input name={name}
                        autoComplete="off"
                        type="text"
@@ -77,13 +78,6 @@ const TagField = ({name, tag, onAddHashtag, placeholder, error = ""}) => {
                        className={"form-control" + (error && " is-invalid")}
                        onBlur={handleTouch}
                 />
-                <div className={"autocomplete-items " + (closed && "d-none")}>
-                    {(hashtagSearchTerm.length > 1) &&
-                    hashtagSearchResults.map(tag =>
-                        (tag.posts.length > 2) &&
-                        (<div key={tag.id} onClick={() => persistAndClosed(tag)}>{tag.name} ({tag.posts.length})</div>))
-                    }
-                </div>
             </div>
             {error && <p className={"invalid-feedback"}>{error.hashtag}</p>}
         </div>

@@ -3,13 +3,14 @@
 namespace App\DataFixtures;
 
 use App\Entity\Hashtag;
-use App\Entity\Image;
+use App\Entity\MediaObject;
 use App\Entity\Post;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
@@ -58,9 +59,22 @@ class AppFixtures extends Fixture
                     $count++;
                 }
 
-                $image = new Image($faker->userName . '.png', 'https://loremflickr.com/6' . random_int(10, 99) . '/3' . random_int(10, 99) . '/cat');
-                $manager->persist($image);
-                $post->setImage($image);
+                $src = "src/DataFixtures/fixture.gif";
+                $newfile = "src/DataFixtures/fixxture.gif";
+
+                copy($src, $newfile);
+                $file = new UploadedFile(
+                    $newfile,
+                    'fixture.gif',
+                    '	image/gif',
+                    null,
+                    true //  Set test mode true !!! " Local files are used in test mode hence the code should not enforce HTTP uploads."
+                );
+                $mediaObject = new MediaObject();
+                $mediaObject->setFile($file);
+                $manager->persist($mediaObject);
+
+                $post->setImage($mediaObject);
                 $manager->persist($post);
             }
         }
