@@ -1,4 +1,10 @@
 {
+    "name": "trop2trop",
+    "description": "a really cool social network",
+    "version": "0.0.1",
+    "engines": {
+        "node": "13.14.x"
+    },
     "devDependencies": {
         "@babel/preset-react": "^7.0.0",
         "@symfony/webpack-encore": "^0.29.0",
