@@ -1,9 +1,17 @@
-### Actualités
-    - Les fixtures ne sont plus a jour, depuis l'utilisation de vich/uploader-bundle.
-    - Beaucoup trop d'appel à l'api par react.
+### Présentation
+    Esquice d'une sorte de réseau social inspiré d'instagram et de VieDeMerde
+    - Front en javascript avec React 
+    - Api en php avec Symfony et ApiPlatform
+    - Base de donnée Mysql
+
+### TODO
+    - BackOffice pour administration et moderation
+    - Affichage des posts par feelings
+    - Partage des posts sur les réseaux sociaux
+    - ...
 
 ## Pour installer :
-      make install
+    make install
 
 ## Pour lancer :
     make run 
@@ -14,3 +22,4 @@
 le site : http://localhost:8000/
 
 api platform : http://localhost:8000/api
+

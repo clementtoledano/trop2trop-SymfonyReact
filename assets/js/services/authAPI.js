@@ -1,6 +1,7 @@
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import {toast} from "react-toastify";
+import {URL_LOGIN} from "../config";
 
 /**
  * Requete d'authentification et stockage + token et header
@@ -9,7 +10,7 @@ import {toast} from "react-toastify";
  */
 function authenticate(credentials) {
     return axios
-        .post(`http://localhost:8000/api/login_check`, credentials)
+        .post(URL_LOGIN, credentials)
         .then(response => response.data.token)
         .then(token => {
             // on stocke le token dans le localStorage

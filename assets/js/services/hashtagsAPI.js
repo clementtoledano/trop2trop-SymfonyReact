@@ -1,16 +1,17 @@
 import axios from 'axios';
+import {URL_FEELINGS, URL_HASHTAGS} from "../config";
 
 
 function findAll() {
     return axios
-        .get(`http://localhost:8000/api/hashtags`)
+        .get(URL_HASHTAGS)
         .then(response => response.data['hydra:member'])
         .then(data => data.filter(tag => tag.totalPosts > 0 && tag.name.length >1))
 }
 
 function findAllByTotalPost() {
     return axios
-        .get(`http://localhost:8000/api/hashtags`)
+        .get(URL_HASHTAGS)
         .then(response => response.data['hydra:member'])
         .then(data => data.filter(tag => tag.totalPosts > 0 && tag.name.length > 1))
         .then(data => data.sort((a, b) => b.totalPosts - a.totalPosts))
@@ -18,7 +19,7 @@ function findAllByTotalPost() {
 
 function findFeelingByUser(userId) {
     return axios
-        .get(`http://localhost:8000/api/feelings/${userId}`)
+        .get(URL_FEELINGS+`/${userId}`)
         .then(response => response.data)
 }
 

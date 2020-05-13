@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {URL_USERS} from "../config";
 
 /**
  * Requete de création d'un user
@@ -6,7 +7,7 @@ import axios from 'axios';
  */
 function create(user) {
     return axios
-        .post(`http://localhost:8000/api/users`, user)
+        .post(URL_USERS, user)
         .then(response => console.log(response))
 }
 
