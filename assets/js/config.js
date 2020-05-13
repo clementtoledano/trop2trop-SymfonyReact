@@ -6,3 +6,6 @@ export const URL_POSTS = URL_API + "posts"
 export const URL_MEDIA_OBJECTS = URL_API + "media_objects"
 export const URL_HASHTAGS = URL_API + "hashtags"
 export const URL_FEELINGS = URL_API + "feelings"
+
+
+export const URL_MEDIA = process.env.MEDIA_URL

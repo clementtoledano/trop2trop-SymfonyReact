@@ -4,6 +4,7 @@ import PostsAPI from "../services/postsAPI"
 import ImageUploading from "react-images-uploading";
 import TagField from "../components/forms/TagField";
 import {toast} from "react-toastify";
+import {URL_MEDIA} from "../config";
 
 const PostEditPage = React.memo(({history, match}) => {
 
@@ -186,7 +187,7 @@ const PostEditPage = React.memo(({history, match}) => {
                         </div>
                     </div>
                 )}
-            </ImageUploading> || <img src={"http://localhost:8000/media/" + post.image.filePath} alt=""/>}
+            </ImageUploading> || <img src={URL_MEDIA+ post.image.filePath} alt=""/>}
     </div>);
 });
 

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import PostsAPI from "../services/postsAPI";
 import {toast} from "react-toastify";
 import {NavLink} from "react-router-dom";
+import {URL_MEDIA} from "../config";
 
 const AccountPostsPage = () => {
 
@@ -47,7 +48,7 @@ const AccountPostsPage = () => {
                 <tbody>
                 {posts.map(post => <tr key={post.id}>
                     <td>{(new Date(post.createAt)).toLocaleDateString('fr-FR')}</td>
-                    <td><img height={"50px"} src={"http://localhost:8000/media/" + post.image.filePath} alt=""/></td>
+                    <td><img height={"50px"} src={URL_MEDIA + post.image.filePath} alt=""/></td>
                     <td>{post.content}</td>
                     <td><NavLink className={"btn btn-warning"} to={"/post-edit/" + post.id}>modifier</NavLink></td>
                     <td>

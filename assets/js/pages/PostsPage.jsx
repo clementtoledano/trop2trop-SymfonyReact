@@ -4,6 +4,7 @@ import PostsAPI from "../services/postsAPI";
 import InputSearch from "../components/InputSearch";
 import HashtagsAPI from "../services/hashtagsAPI";
 import AuthContext from "../contexts/AuthContext";
+import {URL_MEDIA} from "../config";
 
 
 const PostsPage = () => {
@@ -28,7 +29,7 @@ const PostsPage = () => {
         if (searchResults.length > 0) {
             fetchPosts()
         setCurrentPage(1);
-        };
+        }
     }, [searchResults]);
 
     useEffect(() => {
@@ -132,7 +133,7 @@ const PostsPage = () => {
                 id="dialog"
                 className="c-dialog"
                 onClick={handleImageModal}>
-                <img className="c-dialog__box" src={"http://localhost:8000/media/" + thePost.image.filePath}
+                <img className="c-dialog__box" src={URL_MEDIA + thePost.image.filePath}
                      onClick={handleImageModal} alt="no image"/>
             </div>
         )}
@@ -147,7 +148,7 @@ const PostsPage = () => {
                 <h3 className="card-header">{post.content}</h3>
                 <div id="myImg" className="image-column">
                     <img style={{cursor: "pointer"}} onClick={handleImageModal.bind(this, post)}
-                         className={"image-post"} src={"http://localhost:8000/media/" + post.image.filePath} alt="Card image"/>
+                         className={"image-post"} src={URL_MEDIA + post.image.filePath} alt="Card image"/>
                 </div>
 
                 <div className="card-body">
