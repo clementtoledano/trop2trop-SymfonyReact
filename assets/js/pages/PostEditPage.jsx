@@ -60,7 +60,7 @@ const PostEditPage = React.memo(({history, match}) => {
                 toast.error("Erreur pendant l'édition")
             }
         } else {
-            if (post.image[0]){
+            if (post.image[0]) {
                 try {
                     await PostsAPI.create(post)
                     toast.success('🦄Post créé !');
@@ -75,7 +75,7 @@ const PostEditPage = React.memo(({history, match}) => {
     }
 
     const handleImageChange = async imageList => {
-       await setPost({...post, image: imageList})
+        await setPost({...post, image: imageList})
     };
 
     function handleChange({target}) {
@@ -144,15 +144,14 @@ const PostEditPage = React.memo(({history, match}) => {
                     <TagField name="hashtag3"
                               onAddHashtag={addHashtag3Handler}
                               tag={post.hashtags[2]}
-                              placeholder="#hashtag 3" error={errors.hashtag2}/>
+                              placeholder="#hashtag 3" error={errors.hashtag3}/>
                 </div>
                 <div className="col-3">
                     <TagField name="theHashtag4"
                               onAddHashtag={addHashtag4Handler}
                               tag={post.hashtags[3]}
-                              placeholder="#hashtag 4" error={errors.theHashtag2}/>
+                              placeholder="#hashtag 4" error={errors.hashtag4}/>
                 </div>
-
             </div>
 
             <div className="form-group">
@@ -161,33 +160,33 @@ const PostEditPage = React.memo(({history, match}) => {
                           value={post.content}
                           onChange={handleChange}
                           placeholder="Votre trop de trop !"
-                          className={"form-control" + (errors && " is-invalid")}
+                          className={"form-control"}
                 />
                 {errors && <p className={"invalid-feedback"}>{errors.content}</p>}
             </div>
         </form>
-            {!editing && <ImageUploading onChange={handleImageChange}
-                                         maxFileSize={maxMbFileSize}
-                                         acceptType={["jpg", "gif", "png"]}
-            >
-                {({imageList, onImageUpload, onImageRemoveAll, errors}) => (
-                    <div className="upload__image-wrapper">
-                        <button className={"btn btn-dark"} onClick={onImageUpload}>Upload image</button>
-                        &nbsp;
-                        <button className={"btn btn-dark"} onClick={onImageRemoveAll}>Remove image</button>
-                        {imageList.map(image => (
-                            <div key={image.key} className="image-item">
-                                <img src={image.dataURL} alt="" width="400"/>
-                            </div>
-                        ))}
-                        <div>
-                            {errors.maxNumber && <span>Number of selected images exceed maxNumber</span>}
-                            {errors.acceptType && <span>Your selected file type is not allow</span>}
-                            {errors.maxFileSize && <span>Selected file size exceed maxFileSize</span>}
+        {!editing && <ImageUploading onChange={handleImageChange}
+                                     maxFileSize={maxMbFileSize}
+                                     acceptType={["jpg", "jpeg", "gif", "png"]}
+        >
+            {({imageList, onImageUpload, onImageRemoveAll, errors}) => (
+                <div className="upload__image-wrapper">
+                    <button className={"btn btn-dark"} onClick={onImageUpload}>Upload image</button>
+                    &nbsp;
+                    <button className={"btn btn-dark"} onClick={onImageRemoveAll}>Remove image</button>
+                    {imageList.map(image => (
+                        <div key={image.key} className="image-item">
+                            <img src={image.dataURL} alt="" width="400"/>
                         </div>
+                    ))}
+                    <div>
+                        {errors.maxNumber && <span>Number of selected images exceed maxNumber</span>}
+                        {errors.acceptType && <span>Your selected file type is not allow</span>}
+                        {errors.maxFileSize && <span>Selected file size exceed maxFileSize</span>}
                     </div>
-                )}
-            </ImageUploading> || <img src={URL_MEDIA+ post.image.filePath} alt=""/>}
+                </div>
+            )}
+        </ImageUploading> || <img src={URL_MEDIA + post.image.filePath} alt=""/>}
     </div>);
 });
 
