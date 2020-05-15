@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import HashtagsAPI from "../services/hashtagsAPI";
 
-const InputSearch = ({theSearchResults, theCurrentPage}) => {
+const InputSearch = ({theSearchResults}) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [searchResults, setSearchResults] = useState([]);
     const [closed, setClosed] = useState(true);
@@ -13,7 +13,7 @@ const InputSearch = ({theSearchResults, theCurrentPage}) => {
     const handleSearchInputChanges = ({currentTarget}) => {
         console.log('handleSearchInputChanges')
         setSearchTerm(currentTarget.value)
-        theCurrentPage(1)
+
         setClosed(false)
     };
 

@@ -2,9 +2,10 @@ import axios from 'axios';
 import {URL_MEDIA_OBJECTS, URL_POSTS, URL_USERS} from "../config";
 
 
-async function findAll(itemsPerPage, currentPage, searchResults) {
+async function findAll(itemsPerPage, searchResults) {
     return await axios
-        .get(URL_POSTS + `?pagination=true&count=${itemsPerPage}&page=${currentPage}&hashtags=${(searchResults[0] !== undefined) ? searchResults[0].id : ''}`)
+        // .get(URL_POSTS + `?pagination=true&count=${itemsPerPage}&page=${currentPage}&hashtags=${(searchResults[0] !== undefined) ? searchResults[0].id : ''}`)
+        .get(URL_POSTS + `?pagination=true&count=${itemsPerPage}&hashtags=${(searchResults[0] !== undefined) ? searchResults[0].id : ''}`)
 }
 
 function findByUser() {

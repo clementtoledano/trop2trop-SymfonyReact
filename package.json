@@ -29,6 +29,7 @@
         "react-images-uploading": "^2.1.1",
         "react-infinite-scroll-component": "^5.0.4",
         "react-router-dom": "^5.1.2",
+        "react-sticky": "^6.0.3",
         "react-toastify": "^5.5.0"
     }
 }
