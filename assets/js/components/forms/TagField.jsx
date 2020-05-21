@@ -12,7 +12,10 @@ const TagField = ({name, tag, onAddHashtag, placeholder, error = ""}) => {
     }, [tag]);
 
     useEffect(() => {
-        if (hashtagSearchTerm.length > 1) hashtagSearchTerm && search(hashtagSearchTerm)
+        const delayDebounceFn = setTimeout(() => {
+            if (hashtagSearchTerm.length > 1) hashtagSearchTerm && search(hashtagSearchTerm)
+        }, 500)
+        return () => clearTimeout(delayDebounceFn)
     }, [hashtagSearchTerm]);
 
     const sendTag = (tag) => {
@@ -20,8 +23,9 @@ const TagField = ({name, tag, onAddHashtag, placeholder, error = ""}) => {
     }
 
     const handleSearchInputChanges = ({target}) => {
-        setHashtagSearchTerm(target.value)
-        sendTag(target.value)
+
+        setHashtagSearchTerm(target.value.split(" ").join(""))
+        sendTag(target.value.split(" ").join(""))
         setClosed(false)
     };
 
@@ -43,7 +47,7 @@ const TagField = ({name, tag, onAddHashtag, placeholder, error = ""}) => {
     const handleTouch = () => {
         setTimeout(() => {
             setClosed(true)
-        }, 500);
+        }, 150);
     }
 
     const search = async () => {
@@ -75,11 +79,12 @@ const TagField = ({name, tag, onAddHashtag, placeholder, error = ""}) => {
                        onKeyPress={handleKeyEnterPress}
                        onChange={handleSearchInputChanges}
                        placeholder={placeholder}
-                       className={"form-control" + (error && " is-invalid")}
+                       className={"form-control " + (error && "is-invalid")}
                        onBlur={handleTouch}
                 />
+                {error && <p className={"invalid-feedback"}>{error}</p>}
             </div>
-            {error && <p className={"invalid-feedback"}>{error.hashtag}</p>}
+
         </div>
     );
 };

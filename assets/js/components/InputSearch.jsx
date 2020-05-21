@@ -7,20 +7,20 @@ const InputSearch = ({theSearchResults}) => {
     const [closed, setClosed] = useState(true);
 
     useEffect(() => {
-        if (searchTerm.length >1) searchTerm && search(searchTerm)
+        const delayDebounceFn = setTimeout(() => {
+            if (searchTerm.length >1) searchTerm && search(searchTerm)
+        }, 250)
+        return () => clearTimeout(delayDebounceFn)
     }, [searchTerm])
 
     const handleSearchInputChanges = ({currentTarget}) => {
-        console.log('handleSearchInputChanges')
-        setSearchTerm(currentTarget.value)
-
+        setSearchTerm(currentTarget.value.split(" ").join(""))
         setClosed(false)
     };
 
     const handleKeyEnterPress = (event) => {
         if (event.key === 'Enter') {
             const value = event.currentTarget.value;
-            // setSearchTerm(value)
             setSearchTerm(searchResults[0] && searchResults[0].name || value )
             setClosed(true)
         }

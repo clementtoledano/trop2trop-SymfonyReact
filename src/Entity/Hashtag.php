@@ -11,7 +11,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-
 /**
  * @ORM\Entity(repositoryClass="App\Repository\HashtagRepository")
  * @ApiResource(
@@ -51,7 +50,8 @@ class Hashtag
      * @return int
      * @Groups("hashtag:read")
      */
-    public function getTotalPosts(): int {
+    public function getTotalPosts(): int
+    {
         return count($this->posts);
     }
 

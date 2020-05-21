@@ -1,0 +1,49 @@
+<?php
+
+namespace App\Events;
+
+use ApiPlatform\Core\EventListener\EventPriorities;
+use App\Entity\Hashtag;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
+
+class PostHashtagSubscriber implements EventSubscriberInterface
+{
+
+    private $manager;
+
+
+    public function __construct(EntityManagerInterface $manager)
+    {
+        $this->manager = $manager;
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::VIEW =>
+                ['setPostHashtag', EventPriorities::PRE_VALIDATE]
+        ];
+
+    }
+
+
+    public function setPostHashtag(ViewEvent $event)
+    {
+
+        $hashtag = $event->getControllerResult();
+        $method = $event->getRequest()->getMethod();
+
+        if ($hashtag instanceof Hashtag && $method === 'POST') {
+            $theTag = $this->manager->getRepository(Hashtag::class)->findOneBy(['name' => $hashtag->getName()]);
+            if ($theTag) {
+
+//                return new Response($theTag->getId());
+            }
+
+        }
+    }
+}

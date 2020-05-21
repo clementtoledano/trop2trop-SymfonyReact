@@ -19,6 +19,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
  * @ApiResource(
+ *     collectionOperations={
+ *          "get",
+ *          "post"={
+ *              "controller"=App\Controller\CreatePostController::class
+ *          }
+ *      },
  *     attributes={
  *          "order":{"createAt":"desc"}
  *     },
@@ -41,7 +47,7 @@ class Post
      * @ORM\Column(type="text")z
      * @Groups({"post:read"})
      * @Assert\NotBlank(message="le contenu est obligatoire")
-     * @Assert\Length(min="10", minMessage="le pseudo doit faire au moins 10 caractères", max="141", maxMessage="le pseudo doit faire au maximum 141 caractères")
+     * @Assert\Length(min="10", minMessage="le post doit faire au moins 10 caractères", max="141", maxMessage="le post doit faire au maximum 141 caractères")
      */
     private $content;
 
@@ -144,7 +150,8 @@ class Post
      * @return int
      * @Groups("post:read")
      */
-    public function getTotalFeelingSilly(): int {
+    public function getTotalFeelingSilly(): int
+    {
         return count($this->feelingSilly);
     }
 
@@ -153,7 +160,8 @@ class Post
      * @return int
      * @Groups("post:read")
      */
-    public function getTotalFeelingAngry(): int {
+    public function getTotalFeelingAngry(): int
+    {
         return count($this->feelingAngry);
     }
 
@@ -161,7 +169,8 @@ class Post
      * @return int
      * @Groups("post:read")
      */
-    public function getTotalFeelingBored(): int {
+    public function getTotalFeelingBored(): int
+    {
         return count($this->feelingBored);
     }
 
@@ -169,7 +178,8 @@ class Post
      * @return int
      * @Groups("post:read")
      */
-    public function getTotalFeelingScary(): int {
+    public function getTotalFeelingScary(): int
+    {
         return count($this->feelingScary);
     }
 
@@ -391,28 +401,34 @@ class Post
     /**
      * @Groups("post:read")
      */
-    public function getUserFeelingAngry() {
+    public function getUserFeelingAngry()
+    {
         return $this->getFeelingAngry();
     }
+
     /**
      * @Groups("post:read")
      */
-    public function getUserFeelingBored() {
+    public function getUserFeelingBored()
+    {
         return $this->getFeelingBored();
     }
+
     /**
      * @Groups("post:read")
      */
-    public function getUserFeelingSilly() {
+    public function getUserFeelingSilly()
+    {
         return $this->getFeelingSilly();
     }
+
     /**
      * @Groups("post:read")
      */
-    public function getUserFeelingScary() {
+    public function getUserFeelingScary()
+    {
         return $this->getFeelingScary();
     }
-
 
 
 }

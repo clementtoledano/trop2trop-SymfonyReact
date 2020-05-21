@@ -12,7 +12,7 @@ const AccountPostsPage = () => {
         fetchPosts();
     }, []);
 
-    const fetchPosts = async () => {
+    const fetchPosts =  async () => {
         try {
             setPosts(await PostsAPI.findByUser());
         } catch (e) {
@@ -20,12 +20,12 @@ const AccountPostsPage = () => {
         }
     }
 
-    const deletePost = async (postId) => {
+    const deletePost =  (postId) => {
 
         try {
             const newPosts = [...posts].filter(post => post.id !== postId);
             setPosts(newPosts)
-            await PostsAPI.deletePost(postId)
+             PostsAPI.deletePost(postId)
             toast.success('🦄Post supprimé !');
         } catch (e) {
             console.log(e.response)
@@ -41,8 +41,8 @@ const AccountPostsPage = () => {
                     <th scope="col">Date de création</th>
                     <th scope="col">image</th>
                     <th scope="col">Titre</th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
+                    <th scope="col"> </th>
+                    <th scope="col"> </th>
                 </tr>
                 </thead>
                 <tbody>

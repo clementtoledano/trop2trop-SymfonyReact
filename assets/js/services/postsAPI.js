@@ -1,5 +1,6 @@
 import axios from 'axios';
-import {URL_MEDIA_OBJECTS, URL_POSTS, URL_USERS} from "../config";
+import {URL_HASHTAGS, URL_MEDIA_OBJECTS, URL_POSTS, URL_USERS} from "../config";
+import HashtagsAPI from "./hashtagsAPI";
 
 
 async function findAll(itemsPerPage, searchResults) {
@@ -20,16 +21,37 @@ function findById(postId) {
         .get(URL_POSTS + `/${postId}`)
 }
 
-async function create(post) {
-    await uploadFile(post.image)
-        .then(response => post['image'] = response.id)
-    await axios
-        .post(URL_POSTS, post)
+
+const create = async post => {
+    try {
+        post["hashtags"] = await hashtags(post.hashtags)
+        await uploadFile(post.image)
+            .then(response => post['image'] = "/api/media_objects/" + response.id)
+        await axios
+            .post(URL_POSTS, post)
+    } catch (e) {
+        console.log(e)
+    }
 }
 
-async function update(post, id) {
-    await axios.put(URL_POSTS + `/${id}`, post)
-}
+const hashtags = hashtags =>
+    Promise.all(hashtags.map(async theHashtag =>
+            await HashtagsAPI.findByName(theHashtag)
+                .then(id => {
+                        if (id === null) {
+                            return axios
+                                .post(URL_HASHTAGS, {
+                                    "name": theHashtag
+                                })
+                                .then(res => "/api/hashtags/" + res.data.id)
+                        } else {
+                            return "/api/hashtags/" + id
+                        }
+                    }
+                )
+        )
+    )
+
 
 async function uploadFile(imageFile) {
     const formData = new FormData();
@@ -41,6 +63,10 @@ async function uploadFile(imageFile) {
             }
         })
         .then(response => response.data)
+}
+
+function update(post, id) {
+    axios.put(URL_POSTS + `/${id}`, post).then(r => r)
 }
 
 function deletePost(postId) {
