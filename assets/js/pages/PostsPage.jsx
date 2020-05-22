@@ -1,25 +1,36 @@
-import React, {useContext, useEffect, useState} from 'react';
-import PostsAPI from "../services/postsAPI";
-import InputSearch from "../components/InputSearch";
-import HashtagsAPI from "../services/hashtagsAPI";
-import AuthContext from "../contexts/AuthContext";
-import {URL_MEDIA} from "../config";
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {StickyContainer, Sticky} from 'react-sticky';
+import {URL_MEDIA} from "../config";
+
+import InputSearch from "../components/InputSearch";
+import AuthContext from "../contexts/AuthContext";
+import AsideHashtags from "../components/AsideHashtags";
+import AsideTopPost from "../components/AsideTopPost";
+import PostsAPI from "../services/postsAPI";
 
 const PostsPage = () => {
     const {isAuthenticated, setIsAuthenticated} = useContext(AuthContext)
+    const isMounted = useRef(null);
 
     const [posts, setPosts] = useState([]);
-    const [hashtags, setHashtags] = useState([]);
     const [searchResults, setSearchResults] = useState([]);
 
     const [itemsPerPage, setItemsPerPage] = useState(5);
     const [buttonFeeling, setButtonFeeling] = useState(false);
 
+    const [thePost, setThePost] = useState([]);
+    const [postKey, setPostKey] = useState(null);
+
+
     useEffect(() => {
-        fetchHashtags()
+        // executed when component mounted
+        isMounted.current = true;
         fetchPosts()
+        return () => {
+            // executed when unmount
+            isMounted.current = false;
+        }
     }, [])
 
     useEffect(() => {
@@ -47,21 +58,6 @@ const PostsPage = () => {
         }
     }
 
-    const fetchHashtags = async () => {
-        try {
-            const data = await HashtagsAPI.findAllByTotalPost();
-            setHashtags(data);
-        } catch (error) {
-            console.log(error.response)
-        }
-    }
-
-    const hashtagList = {
-        cursor: "pointer"
-    };
-
-    const [thePost, setThePost] = useState([]);
-    const [postKey, setPostKey] = useState(null);
 
     const handleImageModal = post => {
         (postKey === null) ? setPostKey(post.id) : setPostKey(null);
@@ -105,6 +101,9 @@ const PostsPage = () => {
         }, post.id)
     };
 
+    const hashtagList = {
+        cursor: "pointer"
+    };
 
     return (
         <div className={"row"}>
@@ -182,32 +181,12 @@ const PostsPage = () => {
                     topOffset={-20}
                 >
                     {({style, isSticky}) => (<aside style={{...style, marginTop: isSticky ? '20px' : '0px'}}>
-
                             {/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> BAR DE RECHERCHE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/}
                             <InputSearch theSearchResults={setSearchResults}/>
                             {/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TOP 10 HASHTAG <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/}
-                            <div className="card text-white bg-primary mt-3">
-                                <div className="card-header">TOP 10 - HASHTAGS</div>
-                                <div className="card-body">
-                                    {hashtags.slice(0, 10).map(tag => (<p key={tag.name}>
-                                            <a style={hashtagList} onClick={() => setSearchResults([tag])}>{tag.name} ({tag.totalPosts})</a>
-                                        </p>)
-                                    )}
-                                </div>
-                            </div>
+                            <AsideHashtags setSearchResults={setSearchResults} hashtagList={hashtagList}/>
                             {/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TOP POST <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/}
-                            <div className="card text-white bg-primary mt-3">
-                                <div className="card-header">TOP - TROP DE TROP</div>
-                                <div className="card-body">
-                                    <a href="#">les plus trop de trop</a>
-                                    <br/>
-                                    <a href="#">les moins trop de trop</a>
-                                    <br/>
-                                    <a href="#">les plus fou</a>
-                                    <br/>
-                                    <a href="#">les plus flippant</a>
-                                </div>
-                            </div>
+                           <AsideTopPost/>
                         </aside>
                     )}
                 </Sticky>

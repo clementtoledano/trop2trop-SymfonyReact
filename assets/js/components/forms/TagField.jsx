@@ -88,4 +88,4 @@ const TagField = ({name, tag, onAddHashtag, placeholder, error = ""}) => {
         </div>
     );
 };
-export default TagField;
+export default React.memo(TagField);

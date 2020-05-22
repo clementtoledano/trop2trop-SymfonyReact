@@ -72,4 +72,4 @@ const InputSearch = ({theSearchResults}) => {
     );
 };
 
-export default InputSearch;
+export default React.memo(InputSearch);

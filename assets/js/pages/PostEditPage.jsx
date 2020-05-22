@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import PostsAPI from "../services/postsAPI"
 import ImageUploading from "react-images-uploading";
@@ -13,16 +13,27 @@ const PostEditPage = React.memo(({history, match}) => {
             content: '0123456789',
             image: []
         });
+        const isMounted = useRef(null);
 
         const {id = "new"} = match.params;
         const [editing, setEditing] = useState(false)
         const maxMbFileSize = 1;
 
         useEffect(() => {
+            // executed when component mounted
+            isMounted.current = true;
+
+            return () => {
+                // executed when unmount
+                isMounted.current = false;
+            }
+        }, [])
+
+
+        useEffect(() => {
             if (id !== "new") {
                 setEditing(true);
                 fetchPost(id)
-                console.log(errors)
             }
         }, [id]);
 
@@ -61,7 +72,7 @@ const PostEditPage = React.memo(({history, match}) => {
                 formIsValid = false;
                 theErrors['content'] = "min 10 et max 100 caracteres"
             }
-            if (!post.image[0]) {
+            if (!editing && !post.image[0]) {
                 theErrors['image'] = "image obligatoire"
                 formIsValid = false;
             }
@@ -212,7 +223,7 @@ const PostEditPage = React.memo(({history, match}) => {
                         <div>
                             {errors.maxNumber && <span className={"alert alert-danger"}>Number of selected images exceed maxNumber</span>}
                             {errors.acceptType && <span className={"alert alert-danger"}>Your selected file type is not allow</span>}
-                            {errors.maxFileSize && <span className={"alert alert-danger"} > Selected file size exceed maxFileSize</span>}
+                            {errors.maxFileSize && <span className={"alert alert-danger"}> Selected file size exceed maxFileSize</span>}
                         </div>
                     </div>
                 )}
@@ -220,7 +231,7 @@ const PostEditPage = React.memo(({history, match}) => {
 
 
             || <img src={URL_MEDIA + post.image.filePath} alt=""/>}
-            {errors.image && <p className={"alert alert-danger"}>{errors.image}</p>}
+            {!editing && errors.image && <p className={"alert alert-danger"}>{errors.image}</p>}
 
         </div>);
     }

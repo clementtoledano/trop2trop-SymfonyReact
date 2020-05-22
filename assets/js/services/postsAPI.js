@@ -5,7 +5,6 @@ import HashtagsAPI from "./hashtagsAPI";
 
 async function findAll(itemsPerPage, searchResults) {
     return await axios
-        // .get(URL_POSTS + `?pagination=true&count=${itemsPerPage}&page=${currentPage}&hashtags=${(searchResults[0] !== undefined) ? searchResults[0].id : ''}`)
         .get(URL_POSTS + `?pagination=true&count=${itemsPerPage}&hashtags=${(searchResults[0] !== undefined) ? searchResults[0].id : ''}`)
 }
 
