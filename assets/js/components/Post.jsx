@@ -3,7 +3,7 @@ import {URL_MEDIA} from "../config";
 import PostsAPI from "../services/postsAPI";
 
 
-const Post = ({isAuthenticated, post, handleImageModal, setButtonFeeling}) => {
+const Post = ({isAuthenticated, post, handleImageModal, setButtonFeeling, setSearchResults}) => {
 
     const handleFeelingAngry = async (post) => {
         setButtonFeeling(true)

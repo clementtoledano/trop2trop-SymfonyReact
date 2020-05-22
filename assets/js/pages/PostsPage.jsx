@@ -9,6 +9,7 @@ import AsideHashtags from "../components/AsideHashtags";
 import AsideTopPost from "../components/AsideTopPost";
 import PostsAPI from "../services/postsAPI";
 import Post from "../components/Post";
+import TagField from "../components/forms/TagField";
 
 const PostsPage = () => {
     const {isAuthenticated, setIsAuthenticated} = useContext(AuthContext)
@@ -76,7 +77,8 @@ const PostsPage = () => {
                 <InfiniteScroll dataLength={posts.length} next={fetchPosts} hasMore={true} loader={<h4>Loading...</h4>}>
                     {posts.map(post =>
                         <Post key={post.id} post={post} handleImageModal={handleImageModal}
-                              isAuthenticated={isAuthenticated} setButtonFeeling={setButtonFeeling}/>)}
+                              isAuthenticated={isAuthenticated} setButtonFeeling={setButtonFeeling}
+                              setSearchResults={setSearchResults}/>)}
                 </InfiniteScroll>
             </div>
             <StickyContainer className="col-4">
