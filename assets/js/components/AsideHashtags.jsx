@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 
 import HashtagsAPI from "../services/hashtagsAPI";
 
-const AsideHashtags = ({setSearchResults, hashtagList}) => {
+const AsideHashtags = ({setSearchResults}) => {
     const [hashtags, setHashtags] = useState([]);
 
     useEffect(() => {
@@ -24,7 +24,7 @@ const AsideHashtags = ({setSearchResults, hashtagList}) => {
             <div className="card-header">TOP 10 - HASHTAGS</div>
             <div className="card-body">
                 {hashtags.slice(0, 10).map(tag => (<p key={tag.name}>
-                        <a style={hashtagList} onClick={() => setSearchResults([tag])}>{tag.name} ({tag.totalPosts})</a>
+                        <a style={{cursor: "pointer"}} onClick={() => setSearchResults([tag])}>{tag.name} ({tag.totalPosts})</a>
                     </p>)
                 )}
             </div>
