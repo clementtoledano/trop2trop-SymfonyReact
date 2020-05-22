@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import ReactDOM from 'react-dom';
 import {HashRouter, Route, Switch, withRouter, Redirect} from "react-router-dom";
-
+import "bootswatch/dist/sketchy/bootstrap.min.css";
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 import '../css/app.css';
 import Navbar from "./components/Navbar";

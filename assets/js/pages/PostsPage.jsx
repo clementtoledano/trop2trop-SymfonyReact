@@ -9,10 +9,9 @@ import AsideHashtags from "../components/AsideHashtags";
 import AsideTopPost from "../components/AsideTopPost";
 import PostsAPI from "../services/postsAPI";
 import Post from "../components/Post";
-import TagField from "../components/forms/TagField";
 
 const PostsPage = () => {
-    const {isAuthenticated, setIsAuthenticated} = useContext(AuthContext)
+    const {isAuthenticated} = useContext(AuthContext)
     const isMounted = useRef(null);
 
     const [posts, setPosts] = useState([]);
@@ -23,7 +22,6 @@ const PostsPage = () => {
 
     const [thePost, setThePost] = useState([]);
     const [postKey, setPostKey] = useState(null);
-
 
     useEffect(() => {
         // executed when component mounted

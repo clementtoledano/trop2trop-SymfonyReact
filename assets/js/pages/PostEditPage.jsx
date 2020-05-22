@@ -152,7 +152,6 @@ const PostEditPage = React.memo(({history, match}) => {
             setPost({...post, hashtags: hashtags})
         }
 
-
         return (<div>
             {!editing && <h1>Nouveau TROP 2 TROP</h1> || <h1>Modification du TROP 2 TROP</h1>}
             <form onSubmit={handleSubmit}>
