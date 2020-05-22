@@ -2,18 +2,21 @@ import React, {useState} from 'react';
 import Field from "../components/forms/Field";
 import usersAPI from "../services/usersAPI";
 import {toast} from "react-toastify";
+import {NavLink} from "react-router-dom";
 
 const SubscribePage = ({history}) => {
     const [user, setUser] = useState({
-        name: 'azeazeaze',
-        email: 'aze@aze.aze',
-        password: 'azeazeaze'
+        name: '',
+        email: '',
+        password: '',
+        rePassword: ''
     });
 
     const [errors, setErrors] = useState({
         name: "",
         email: "",
-        password: ""
+        password: "",
+        rePassword: ""
     });
 
     // Gestion des champs
@@ -22,17 +25,22 @@ const SubscribePage = ({history}) => {
         setUser({...user, [name]: value})
     }
 
+
     // Gestion du submit
     const handleSubmit = async event => {
         event.preventDefault();
+        if (user.rePassword !== user.password) {
+            setErrors({rePassword: "mauvais mot de passe"});
+            return
+        }
         try {
+            setErrors({});
             await usersAPI.create(user)
             toast.success('🦄Compte créé !');
-            setErrors({});
             history.replace("/posts")
         } catch (e) {
-                toast.error("Erreur pendant la création")
-            if(e.response.data.violations){
+            toast.error("Erreur pendant la création")
+            if (e.response.data.violations) {
                 const apiErrors = {};
                 e.response.data.violations.map(violation => {
                     apiErrors[violation.propertyPath] = violation.message;
@@ -44,15 +52,18 @@ const SubscribePage = ({history}) => {
     }
 
     return (<>
-        <h1>On crée un profil ici!</h1>
+        <h1>Rejoint les troupes !</h1>
         <form onSubmit={handleSubmit}>
-            <Field name="name" label="Votre pseudo" value={user.name} onChange={handleChange} placeholder="pseudo" error={errors.name}/>
-            <Field name="email" label="Votre email" value={user.email} onChange={handleChange} placeholder="email de connexion" type="email" error={errors.email}/>
-            <Field name="password" label="Votre mot de passe" value={user.password} onChange={handleChange} placeholder="password de connexion" type="password" error={errors.password}/>
+            <Field name="name" label="Pseudo" value={user.name} onChange={handleChange} placeholder="pseudo" error={errors.name}/>
+            <Field name="email" label="Email" value={user.email} onChange={handleChange} placeholder="email de connexion" type="email" error={errors.email}/>
+            <Field name="password" label="Mot de passe" value={user.password} onChange={handleChange} placeholder="mot de passe" type="password" error={errors.password}/>
+            <Field name="rePassword" label="Confirmer le mot de passe" value={user.rePassword} onChange={handleChange} placeholder="mot de passe" type="password" error={errors.rePassword}/>
             <div className="form-group">
                 <button type="submit" className="btn btn-dark">Souscrire</button>
             </div>
         </form>
+        <p>En vous inscrivant, vous acceptez notre <a href="#">Politique de confidentialité</a> et notamment notre <a href="#">Politique de cookies</a>.</p>
+        <NavLink to="/login">Vous possédez déjà un compte ?</NavLink>
     </>);
 };
 

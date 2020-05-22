@@ -3,13 +3,14 @@ import AuthAPI from "../services/authAPI";
 import AuthContext from "../contexts/AuthContext";
 import Field from "../components/forms/Field";
 import {toast} from "react-toastify";
+import {NavLink} from "react-router-dom";
 
 const LoginPage = ({history}) => {
     const {setIsAuthenticated} = useContext(AuthContext)
 
     const [credentials, setCredentials] = useState({
-        username: 'aze@aze.aze',
-        password: 'azeazeaze'
+        username: '',
+        password: ''
     });
 
     const [error, setError] = useState("");
@@ -36,14 +37,16 @@ const LoginPage = ({history}) => {
     }
 
     return (<>
-        <h1>Connexion !!</h1>
+        <h1>Une envie de Trop-de-trop ?</h1>
         <form onSubmit={handleSubmit}>
             <Field name="username" label="Votre email" value={credentials.username} onChange={handleChange} placeholder="email de connexion" type="email" error={error}/>
             <Field name="password" label="Votre mot de passe" value={credentials.password} onChange={handleChange} placeholder="password de connexion" type="password" error={error}/>
             <div className="form-group">
                 <button type="submit" className="btn btn-dark">Connexion</button>
             </div>
-        </form>
+        </form><br/>
+        <NavLink to="#">Mot de passe oublié ?</NavLink><br/>
+        <NavLink to="/subscribe">Pas de compte ? Créez votre compte.</NavLink>
     </>);
 }
 
