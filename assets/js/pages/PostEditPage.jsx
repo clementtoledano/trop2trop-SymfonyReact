@@ -163,52 +163,37 @@ const PostEditPage = React.memo(({history, match}) => {
                 <p>1 tags obligatoire, min 2 max 10 caractères, pas d'espaces ni caractères spéciaux</p>
                 <div className="row">
                     <div className="col-3">
-                        <TagField name="hashtag1" onAddHashtag={addHashtag1Handler}
-                                  tag={post.hashtags[0]}
-                                  placeholder="#hashtag 1"
-                                  error={errors.hashtag1}
+                        <TagField name="hashtag1" onAddHashtag={addHashtag1Handler} tag={post.hashtags[0]}
+                                  placeholder="#hashtag 1" error={errors.hashtag1}
                         />
                     </div>
                     <div className="col-3">
-                        <TagField name="hashtag2"
-                                  onAddHashtag={addHashtag2Handler}
-                                  tag={post.hashtags[1]}
-                                  placeholder="#hashtag 2"
-                                  error={errors.hashtag2}
+                        <TagField name="hashtag2" onAddHashtag={addHashtag2Handler} tag={post.hashtags[1]}
+                                  placeholder="#hashtag 2" error={errors.hashtag2}
                         />
                     </div>
                     <div className="col-3">
-                        <TagField name="hashtag3"
-                                  onAddHashtag={addHashtag3Handler}
-                                  tag={post.hashtags[2]}
-                                  placeholder="#hashtag 3"
-                                  error={errors.hashtag3}
+                        <TagField name="hashtag3" onAddHashtag={addHashtag3Handler} tag={post.hashtags[2]}
+                                  placeholder="#hashtag 3" error={errors.hashtag3}
                         />
                     </div>
                     <div className="col-3">
-                        <TagField name="theHashtag4"
-                                  onAddHashtag={addHashtag4Handler}
-                                  tag={post.hashtags[3]}
-                                  placeholder="#hashtag 4"
-                                  error={errors.hashtag4}
+                        <TagField name="theHashtag4" onAddHashtag={addHashtag4Handler} tag={post.hashtags[3]}
+                                  placeholder="#hashtag 4" error={errors.hashtag4}
                         />
                     </div>
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="content">content</label>
-                    <textarea name="content"
-                              value={post.content}
-                              onChange={handleChange}
-                              placeholder="Votre trop de trop !"
-                              className={"form-control " + (errors.content && "is-invalid")}
+                    <textarea name="content" value={post.content} onChange={handleChange}
+                              placeholder="Votre trop de trop !" className={"form-control " + (errors.content && "is-invalid")}
                     />
+                    <p style={(post.content.length < 10 || post.content.length > 100) ? {color: "red"} : undefined}>{post.content.length}</p>
                     {errors.content && <p className={"invalid-feedback"}>{errors.content}</p>}
                 </div>
             </form>
-            {!editing && (<ImageUploading onChange={handleImageChange}
-                                          maxFileSize={maxMbFileSize}
-                                          acceptType={["jpg", "jpeg", "gif", "png"]}
+            {!editing && (<ImageUploading onChange={handleImageChange} maxFileSize={maxMbFileSize} acceptType={["jpg", "jpeg", "gif", "png"]}
             >
                 {({imageList, onImageUpload, onImageRemoveAll, errors}) => (
                     <div className="upload__image-wrapper">
@@ -228,7 +213,6 @@ const PostEditPage = React.memo(({history, match}) => {
                     </div>
                 )}
             </ImageUploading>)
-
 
             || <img width="75%" src={URL_MEDIA + post.image.filePath} alt=""/>}
             {!editing && errors.image && <p className={"alert alert-danger"}>{errors.image}</p>}
