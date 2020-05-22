@@ -230,7 +230,7 @@ const PostEditPage = React.memo(({history, match}) => {
             </ImageUploading>)
 
 
-            || <img src={URL_MEDIA + post.image.filePath} alt=""/>}
+            || <img width="75%" src={URL_MEDIA + post.image.filePath} alt=""/>}
             {!editing && errors.image && <p className={"alert alert-danger"}>{errors.image}</p>}
 
         </div>);

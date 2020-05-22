@@ -64,8 +64,13 @@ async function uploadFile(imageFile) {
         .then(response => response.data)
 }
 
-function update(post, id) {
-    axios.put(URL_POSTS + `/${id}`, post).then(r => r)
+async function update(post, id) {
+
+    post["hashtags"] = await hashtags(post.hashtags)
+
+
+    await axios.put(URL_POSTS + `/${id}`, post)
+        .then(r => r)
 }
 
 function deletePost(postId) {

@@ -25,6 +25,13 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *              "controller"=App\Controller\CreatePostController::class
  *          }
  *      },
+ *     itemOperations={
+ *          "get",
+ *          "put"={
+ *              "controller"=App\Controller\EditPostController::class
+ *              },
+ *          "delete"
+ *          },
  *     attributes={
  *          "order":{"createAt":"desc"}
  *     },

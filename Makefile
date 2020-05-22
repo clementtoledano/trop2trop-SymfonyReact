@@ -74,3 +74,12 @@ migrate:
 dump_bd:
 	bin/console database:dump
 
+
+##
+## met a jour la branche master local et push sur github puis revient sur la branche dev
+##---------------------------------------------------------------------------
+github:
+	git checkout master
+	git merge dev
+	git push origin master
+	git checkout dev

@@ -6,7 +6,6 @@ const AsideHashtags = ({setSearchResults}) => {
     const [hashtags, setHashtags] = useState([]);
 
     useEffect(() => {
-        console.log(hashtags.length)
         fetchHashtags()
     }, [])
 
