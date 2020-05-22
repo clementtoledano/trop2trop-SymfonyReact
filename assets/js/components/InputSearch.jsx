@@ -50,7 +50,9 @@ const InputSearch = ({theSearchResults}) => {
     }
 
     const handleTouch = () => {
-        setClosed(true)
+        setTimeout(() => {
+            setClosed(true)
+        }, 150);
     }
 
     return (
