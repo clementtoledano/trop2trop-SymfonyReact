@@ -364,7 +364,7 @@ class Post
         return $this;
     }
 
-    public function getUser(): User
+    public function getUser(): ?User
     {
         return $this->user;
     }
@@ -436,13 +436,10 @@ class Post
     {
         return $this->getFeelingScary();
     }
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->content;
 
+    public function __toString(): string
+    {
+        return substr($this->content, 0, 20) . '...';
     }
 
 }

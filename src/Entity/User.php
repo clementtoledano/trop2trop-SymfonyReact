@@ -57,7 +57,7 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\Length(min="8", minMessage="le mot de passe doit faire au moins 3 caractères", max="20", maxMessage="le mot de passe doit faire au maximum 20 caractères")
+     * @Assert\Length(min="8", minMessage="le mot de passe doit faire au moins 3 caractères", max="100", maxMessage="le mot de passe doit faire au maximum 20 caractères")
      * @Assert\NotBlank(message="le password est obligatoire")
      */
     private $password;
@@ -125,7 +125,7 @@ class User implements UserInterface
         return '';
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -279,13 +279,9 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->name;
-
     }
 
 

@@ -110,7 +110,7 @@ class MediaObject
     /**
      * @return mixed
      */
-    public function getPost()
+    public function getPost(): ?Post
     {
         return $this->post;
     }
@@ -118,7 +118,7 @@ class MediaObject
     /**
      * @param mixed $post
      */
-    public function setPost($post): void
+    public function setPost(?Post $post): void
     {
         $this->post = $post;
     }
@@ -140,6 +140,10 @@ class MediaObject
     }
 
 
+    public function __toString()
+    {
+        return (string) $this->getContentUrl();
+    }
 
 
 }
