@@ -22,13 +22,15 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *     collectionOperations={
  *          "get",
  *          "post"={
- *              "controller"=App\Controller\CreatePostController::class
+ *              "controller"=App\Controller\CreatePostController::class,
+ *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY')"
  *          }
  *      },
  *     itemOperations={
  *          "get",
  *          "put"={
- *              "controller"=App\Controller\EditPostController::class
+ *              "controller"=App\Controller\EditPostController::class,
+ *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY') and object.getUser() == user"
  *              },
  *          "delete"
  *          },

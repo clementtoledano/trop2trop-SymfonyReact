@@ -18,18 +18,25 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ApiResource(
+ *     itemOperations={
+ *          "get",
+ *         "put"={
+ *                  "access_control"="is_granted('IS_AUTHENTICATED_FULLY') and object == user"
+ *          }
+ *     },
  *     normalizationContext={"groups"={"user:read"}},
  *     denormalizationContext={"disable_type_enforcement"=true}
  *     )
  * @UniqueEntity("email", message="l'email est deja utilisé")
+ * @UniqueEntity("name", message="le pseudo est deja utilisé")
  */
 class User implements UserInterface
 {
-    Const ROLE_USER = 'ROLE_USER';
-    Const ROLE_ADMIN = 'ROLE_ADMIN';
-    Const ROLE_SUPERADMIN = 'ROLE_SUPERADMIN';
+    const ROLE_USER = 'ROLE_USER';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_SUPERADMIN = 'ROLE_SUPERADMIN';
 
-    Const DEFAULT_ROLES = [self::ROLE_USER];
+    const DEFAULT_ROLES = [self::ROLE_USER];
 
     /**
      * @ORM\Id()
@@ -57,7 +64,10 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
-     * @Assert\Length(min="8", minMessage="le mot de passe doit faire au moins 3 caractères", max="100", maxMessage="le mot de passe doit faire au maximum 20 caractères")
+     * @Assert\Regex(
+     *      pattern="/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}/",
+     *      message="minimum 8 caractères, une majuscule et un chiffre"
+     * )
      * @Assert\NotBlank(message="le password est obligatoire")
      */
     private $password;

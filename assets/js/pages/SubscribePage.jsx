@@ -57,6 +57,7 @@ const SubscribePage = ({history}) => {
             <Field name="name" label="Pseudo" value={user.name} onChange={handleChange} placeholder="pseudo" error={errors.name}/>
             <Field name="email" label="Email" value={user.email} onChange={handleChange} placeholder="email de connexion" type="email" error={errors.email}/>
             <Field name="password" label="Mot de passe" value={user.password} onChange={handleChange} placeholder="mot de passe" type="password" error={errors.password}/>
+            <span>minimum 8 caractères, une majuscule et un chiffre</span>
             <Field name="rePassword" label="Confirmer le mot de passe" value={user.rePassword} onChange={handleChange} placeholder="mot de passe" type="password" error={errors.rePassword}/>
             <div className="form-group">
                 <button type="submit" className="btn btn-dark">Souscrire</button>
