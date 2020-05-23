@@ -21,5 +21,7 @@
 
 le site : http://localhost:8000/
 
-api platform : http://localhost:8000/api
+api platform : /api
+
+easy admin : /admin
 

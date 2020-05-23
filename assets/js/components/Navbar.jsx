@@ -12,6 +12,9 @@ const Navbar = ({history}) => {
         history.push("/posts");
     };
 
+    const userRole = isAuthenticated ? JSON.parse(localStorage.currentUser).roles : 'PAS_DE_ROLE';
+    const userName = isAuthenticated ? JSON.parse(localStorage.currentUser).name : 'visiteur';
+
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
             <NavLink className="navbar-brand" to="/">TROP DE TROP</NavLink>
@@ -39,8 +42,10 @@ const Navbar = ({history}) => {
                         <li className="nav-item"><NavLink className="nav-link" to="/account-posts">Mes posts</NavLink></li>
                     </>)
                     }
+                        <li className="nav-item">salut {userName} - {userRole}</li>
 
                 </ul>
+
             </div>
         </nav>
     );

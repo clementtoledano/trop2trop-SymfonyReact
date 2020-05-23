@@ -436,6 +436,13 @@ class Post
     {
         return $this->getFeelingScary();
     }
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->content;
 
+    }
 
 }

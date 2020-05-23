@@ -25,6 +25,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class User implements UserInterface
 {
+    Const ROLE_USER = 'ROLE_USER';
+    Const ROLE_ADMIN = 'ROLE_ADMIN';
+    Const ROLE_SUPERADMIN = 'ROLE_SUPERADMIN';
+
+    Const DEFAULT_ROLES = [self::ROLE_USER];
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -43,10 +49,10 @@ class User implements UserInterface
     private $email;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="simple_array", length=200)
      * @Groups({"post:read","user:read"})
      */
-    private $roles = [];
+    private $roles;
 
     /**
      * @var string The hashed password
@@ -61,12 +67,6 @@ class User implements UserInterface
      * @Groups({"post:read","user:read"})
      */
     private $isActive;
-
-    /**
-     * @ORM\Column(type="boolean")
-     * @Groups({"post:read","user:read"})
-     */
-    private $isAdmin;
 
     /**
      * @ORM\Column(type="datetime")
@@ -110,6 +110,8 @@ class User implements UserInterface
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+        $this->roles = self::DEFAULT_ROLES;
+
     }
 
     /**
@@ -128,7 +130,7 @@ class User implements UserInterface
         return $this->id;
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -156,9 +158,6 @@ class User implements UserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
         return array_unique($roles);
     }
 
@@ -209,18 +208,6 @@ class User implements UserInterface
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    public function getIsAdmin(): ?bool
-    {
-        return $this->isAdmin;
-    }
-
-    public function setIsAdmin(bool $isAdmin): self
-    {
-        $this->isAdmin = $isAdmin;
 
         return $this;
     }
@@ -290,6 +277,15 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
+
     }
 
 

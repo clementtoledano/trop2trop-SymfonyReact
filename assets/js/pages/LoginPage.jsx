@@ -38,13 +38,17 @@ const LoginPage = ({history}) => {
 
     return (<>
         <h1>Une envie de Trop-de-trop ?</h1>
+
+        <p className="jumbotron">admin : <br/> mail : admin@admin.admin <br/> mdp : adminadmin</p>
+
         <form onSubmit={handleSubmit}>
             <Field name="username" label="Votre email" value={credentials.username} onChange={handleChange} placeholder="email de connexion" type="email" error={error}/>
             <Field name="password" label="Votre mot de passe" value={credentials.password} onChange={handleChange} placeholder="password de connexion" type="password" error={error}/>
             <div className="form-group">
                 <button type="submit" className="btn btn-dark">Connexion</button>
             </div>
-        </form><br/>
+        </form>
+        <br/>
         <NavLink to="#">Mot de passe oublié ?</NavLink><br/>
         <NavLink to="/subscribe">Pas de compte ? Créez votre compte.</NavLink>
     </>);

@@ -28,8 +28,7 @@ class UserSubscriber implements EventSubscriberInterface
         $method = $event->getRequest()->getMethod();
 
 
-        if ($user instanceof User && $method === 'POST' && $user->getIsAdmin() === null && $user->getIsActive() === null) {
-            $user->setIsAdmin(false);
+        if ($user instanceof User && $method === 'POST' && $user->getIsActive() === null) {
             $user->setIsActive(true);
         }
     }
