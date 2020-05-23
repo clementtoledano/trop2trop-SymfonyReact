@@ -14,15 +14,6 @@ easy_admin:
                 title: 'Posts'
                 actions: ['show' , '-new', '-delete' ]
                 fields: ['id', 'isActive', 'user', 'content', 'createAt', 'feelingAngry', 'feelingSilly', 'feelingBored', 'feelingScary']
+                sort: ['createAt', 'ASC']
             show:
-                fields:
-                    - id
-                    - user
-                    - content
-                    - createAt
-                    - updateAt
-                    - feelingAngry
-                    - feelingSilly
-                    - feelingBored
-                    - feelingScary
-                    - { property: 'image.filePath', template: 'easy_admin/Post/image.html.twig' }
+                fields: ['id', 'isActive', 'user', 'content', 'createAt', 'updateAt',{ property: 'image.filePath', template: 'easy_admin/Post/image.html.twig' }]

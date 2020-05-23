@@ -42,8 +42,10 @@ const Navbar = ({history}) => {
                         <li className="nav-item"><NavLink className="nav-link" to="/account-posts">Mes posts</NavLink></li>
                     </>)
                     }
-                        <li className="nav-item">salut {userName} - {userRole}</li>
-
+                    <li className="nav-item">salut {userName} - {userRole}</li>
+                    {isAuthenticated && userRole == 'ROLE_ADMIN' &&
+                    <li className="nav-item"><a className="btn btn-secondary" href={"/admin"}>BackOffice</a></li>
+                    }
                 </ul>
 
             </div>

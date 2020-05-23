@@ -15,5 +15,4 @@ easy_admin:
                 title: 'Utilisateurs'
                 actions: ['-new', '-delete']
                 fields: ['id', 'isActive', 'name', 'email', 'posts', 'createAt']
-#            show:
-#                fields: ['id', 'isActive', 'username', 'email', 'purchases']
+                sort: ['createAt', 'DESC']

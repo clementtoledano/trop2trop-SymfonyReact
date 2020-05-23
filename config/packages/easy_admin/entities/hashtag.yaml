@@ -10,3 +10,7 @@ easy_admin:
     entities:
         Hashtag:
             class: App\Entity\Hashtag
+            list:
+                title: 'Les Hashtags'
+                actions: ['-new', '-delete' ]
+                fields: ['id', 'name', 'posts']
