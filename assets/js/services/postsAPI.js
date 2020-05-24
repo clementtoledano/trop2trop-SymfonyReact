@@ -26,7 +26,7 @@ const create = async post => {
         post["hashtags"] = await hashtags(post.hashtags)
         await uploadFile(post.image)
             .then(response => post['image'] = "/api/media_objects/" + response.id)
-        await axios
+        return await axios
             .post(URL_POSTS, post)
     } catch (e) {
         console.log(e)
@@ -69,19 +69,19 @@ async function update(post, id) {
     post["hashtags"] = await hashtags(post.hashtags)
 
 
-    await axios.put(URL_POSTS + `/${id}`, post)
+    return await axios.put(URL_POSTS + `/${id}`, post)
         .then(r => r)
 }
 
 function deletePost(postId) {
-    axios
+    return axios
         .delete(URL_POSTS + `/${postId}`)
         .then(response => console.log(response.data))
 }
 
 
 async function updatePostFeeling(feelings, id) {
-    await axios.put(URL_POSTS + `/${id}/feelings`, feelings)
+    return await axios.put(URL_POSTS + `/${id}/feelings`, feelings)
 }
 
 export default {

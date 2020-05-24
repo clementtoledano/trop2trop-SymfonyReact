@@ -11,7 +11,26 @@ function create(user) {
         .then(response => console.log(response))
 }
 
+function findById(userId) {
+    return axios
+        .get(URL_USERS + `/${userId}`)
+        .then(response => response.data)
+}
+
+function update(user, userId) {
+    return axios.put(URL_USERS + `/${userId}`, user)
+        .then(response => console.log(response))
+}
+
+function updatePassword(passwords, userId) {
+    return axios
+        .put(URL_USERS + `/${userId}/reset-password`, passwords)
+        .then(response => console.log(response.data))
+}
 
 export default {
-    create
+    create,
+    findById,
+    update,
+    updatePassword
 }
