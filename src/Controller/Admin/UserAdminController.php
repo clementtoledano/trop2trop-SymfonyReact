@@ -26,14 +26,14 @@ class UserAdminController extends EasyAdminController
         parent::persistEntity($entity);
     }
 
-    /**
-     * @param User $entity
-     */
-    protected function updateEntity($entity): void
-    {
-        $this->encodeUserPassword($entity);
-        parent::updateEntity($entity);
-    }
+//    /**
+//     * @param User $entity
+//     */
+//    protected function updateEntity($entity): void
+//    {
+//        $this->encodeUserPassword($entity);
+//        parent::updateEntity($entity);
+//    }
 
     /**
      * @param User $entity

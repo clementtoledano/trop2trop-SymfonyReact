@@ -39,7 +39,6 @@ function logout() {
     window.localStorage.removeItem('authToken');
     delete axios.defaults.headers['Authorization'];
     toast.info('🦄Vous êtes déconnecté');
-
 }
 
 /**

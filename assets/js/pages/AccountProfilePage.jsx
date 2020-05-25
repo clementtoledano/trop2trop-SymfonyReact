@@ -1,11 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Field from "../components/forms/Field";
 import UserAPI from "../services/usersAPI";
 import {toast} from "react-toastify";
 import AuthApi from "../services/authAPI";
+import AuthContext from "../contexts/AuthContext";
 
-const AccountProfilePage = () => {
+const AccountProfilePage = ({history}) => {
 
+    const {isAuthenticated, setIsAuthenticated} = useContext(AuthContext)
     const [user, setUser] = useState({
         name: '',
         email: ''
@@ -14,7 +16,7 @@ const AccountProfilePage = () => {
     const [password, setPassword] = useState({
         old: '',
         new: '',
-        reNew:''
+        reNew: ''
     });
 
     const userId = JSON.parse(localStorage.getItem('currentUser')).id
@@ -77,7 +79,9 @@ const AccountProfilePage = () => {
                 'newPassword': password.new,
                 'newRetypedPassword': password.reNew
             }, userId)
-            AuthApi.logout()
+            AuthApi.logout();
+            setIsAuthenticated(false);
+            history.push("/");
             toast.success('🦄Mot de passe modifié, veuillez vous reloger !');
         } catch (e) {
             if (e.response.data.violations) {

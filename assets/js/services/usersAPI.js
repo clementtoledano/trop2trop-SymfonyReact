@@ -8,7 +8,7 @@ import {URL_USERS} from "../config";
 function create(user) {
     return axios
         .post(URL_USERS, user)
-        .then(response => console.log(response))
+        // .then(response => console.log(response))
 }
 
 function findById(userId) {
@@ -19,7 +19,7 @@ function findById(userId) {
 
 function update(user, userId) {
     return axios.put(URL_USERS + `/${userId}`, user)
-        .then(response => console.log(response))
+        // .then(response => console.log(response))
 }
 
 function updatePassword(passwords, userId) {

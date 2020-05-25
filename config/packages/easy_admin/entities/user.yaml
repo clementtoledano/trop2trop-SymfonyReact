@@ -13,6 +13,36 @@ easy_admin:
             controller: App\Controller\Admin\UserAdminController
             list:
                 title: 'Utilisateurs'
-                actions: ['-new', '-delete']
-                fields: ['id', 'isActive', 'name', 'email', 'posts', 'createAt']
                 sort: ['createAt', 'DESC']
+                actions: ['-delete']
+                fields:
+                    - 'id'
+                    - { property: 'isActive', label: 'Is Active?'}
+                    - 'name'
+                    - {property: 'email', type: 'email'}
+                    - 'posts'
+                    - 'createAt'
+                    -   property: 'roles'
+                        type: 'choice'
+                        type_options:
+                            expanded: true
+                            multiple: true
+                            choices: { 'ROLE_USER': 'Normal user', 'ROLE_ADMIN': 'Administrator' }
+#            form:
+#                fields:
+#                    - { property: 'isActive', label: 'Is Active?'}
+#                    - 'name'
+#                    - {property: 'email', type: 'email'}
+#                    - password
+#                    - retryPassword
+#                    - oldPassword
+#                    - password
+#                    - password
+#                    - 'posts'
+#                    - 'createAt'
+#                    -   property: 'roles'
+#                        type: 'choice'
+#                        type_options:
+#                            expanded: true
+#                            multiple: true
+#                            choices: { 'ROLE_USER': 'Normal user', 'ROLE_ADMIN': 'Administrator' }

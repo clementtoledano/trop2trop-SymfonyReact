@@ -12,8 +12,9 @@ const Navbar = ({history}) => {
         history.push("/posts");
     };
 
-    const userRole = isAuthenticated ? JSON.parse(localStorage.currentUser).roles : 'PAS_DE_ROLE';
     const userName = isAuthenticated ? JSON.parse(localStorage.currentUser).name : 'visiteur';
+    const userRole = isAuthenticated ? JSON.parse(localStorage.currentUser).roles : 'PAS_DE_ROLE';
+    const userId = isAuthenticated ? JSON.parse(localStorage.currentUser).id : 'pas d\'id';
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -42,13 +43,13 @@ const Navbar = ({history}) => {
                         <li className="nav-item"><NavLink className="nav-link" to="/account-posts">Mes posts</NavLink></li>
                     </>)
                     }
-                    <li className="nav-item">salut {userName} - {userRole}</li>
                     {isAuthenticated && userRole == 'ROLE_ADMIN' &&
                     <li className="nav-item"><a className="btn btn-secondary" href={"/admin"}>BackOffice</a></li>
                     }
                 </ul>
 
             </div>
+                    <p className="nav-item">salut {userName} - {userRole} - {userId}</p>
         </nav>
     );
 };

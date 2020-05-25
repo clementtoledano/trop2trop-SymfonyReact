@@ -159,7 +159,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"get", "post:read"})
+     * @Groups({"get"})
      */
     private $isActive;
 
@@ -190,12 +190,16 @@ class User implements UserInterface
      */
     private $passwordChangeDate;
 
+    /**
+     * @ORM\Column(type="string", length=40, nullable=true)
+     */
+    private $confirmationToken;
 
     public function __construct()
     {
         $this->posts = new ArrayCollection();
         $this->roles = self::DEFAULT_ROLES;
-
+        $this->confirmationToken = null;
     }
 
     public function getId(): ?int
@@ -403,10 +407,27 @@ class User implements UserInterface
         $this->passwordChangeDate = $passwordChangeDate;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getConfirmationToken()
+    {
+        return $this->confirmationToken;
+    }
+
+    /**
+     * @param mixed $confirmationToken
+     */
+    public function setConfirmationToken($confirmationToken): void
+    {
+        $this->confirmationToken = $confirmationToken;
+    }
+
+
+
+
     public function __toString(): string
     {
         return $this->name;
     }
-
-
 }
