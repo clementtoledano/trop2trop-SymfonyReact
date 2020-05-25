@@ -32,7 +32,7 @@ const SubscribePage = ({history}) => {
         try {
             setErrors({});
             await usersAPI.create(user)
-            toast.success('🦄Compte créé !');
+            toast.success('🦄Compte créé ! Vous avez reçu un email de validation');
             history.replace("/posts")
         } catch (e) {
             toast.error("Erreur pendant la création")

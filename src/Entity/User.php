@@ -36,15 +36,15 @@ use App\Controller\ResetPasswordAction;
  *             },
  *             "validation_groups"={"put"}
  *         },
- *         "password:edit"={
+ *         "put-reset-password"={
  *             "access_control"="is_granted('IS_AUTHENTICATED_FULLY') and object == user",
  *             "method"="PUT",
  *             "path"="/users/{id}/reset-password",
  *             "controller"=ResetPasswordAction::class,
  *             "denormalization_context"={
- *                 "groups"={"password:edit"}
+ *                 "groups"={"put-reset-password"}
  *             },
- *             "validation_groups"={"Default", "password:edit"}
+ *             "validation_groups"={"Default", "put-reset-password"}
  *         }
  *     },
  *     collectionOperations={
@@ -107,7 +107,6 @@ class User implements UserInterface
 
     /**
      * @Groups({"post"})
-     * @Assert\NotBlank(groups={"post"})
      * @Assert\Expression(
      *     "this.getPassword() === this.getRetypedPassword()",
      *     message="Passwords does not match",
@@ -117,31 +116,30 @@ class User implements UserInterface
     private $retypedPassword;
 
     /**
-     * @Groups({"password:edit"})
-     * @Assert\NotBlank(groups={"Default", "password:edit"})
+     * @Groups({"put-reset-password"})
+     * @Assert\NotBlank(groups={"Default", "put-reset-password"})
      * @Assert\Regex(
      *     pattern="/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{7,}/",
      *     message="Password must be seven characters long and contain at least one digit, one upper case letter and one lower case letter",
-     *     groups={"Default", "password:edit"}
+     *     groups={"Default", "put-reset-password"}
      * )
      */
     private $newPassword;
 
     /**
-     * @Groups({"password:edit"})
-     * @Assert\NotBlank(groups={"Default", "password:edit"})
+     * @Groups({"put-reset-password"})
      * @Assert\Expression(
      *     "this.getNewPassword() === this.getNewRetypedPassword()",
      *     message="Passwords does not match",
-     *     groups={"Default", "password:edit"}
+     *     groups={"Default", "put-reset-password"}
      * )
      */
     private $newRetypedPassword;
 
     /**
-     * @Groups({"password:edit"})
-     * @Assert\NotBlank(groups={"Default", "password:edit"})
-     * @UserPassword(groups={"Default", "password:edit"})
+     * @Groups({"put-reset-password"})
+     * @Assert\NotBlank(groups={"Default", "put-reset-password"})
+     * @UserPassword(groups={"Default", "put-reset-password"})
      */
     private $oldPassword;
 
@@ -199,6 +197,7 @@ class User implements UserInterface
     {
         $this->posts = new ArrayCollection();
         $this->roles = self::DEFAULT_ROLES;
+        $this->isActive = false;
         $this->confirmationToken = null;
     }
 

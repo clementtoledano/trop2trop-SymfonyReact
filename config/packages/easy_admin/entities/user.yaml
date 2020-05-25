@@ -14,7 +14,7 @@ easy_admin:
             list:
                 title: 'Utilisateurs'
                 sort: ['createAt', 'DESC']
-                actions: ['-delete']
+                actions: ['-new', '-edit', '-delete']
                 fields:
                     - 'id'
                     - { property: 'isActive', label: 'Is Active?'}
@@ -22,12 +22,8 @@ easy_admin:
                     - {property: 'email', type: 'email'}
                     - 'posts'
                     - 'createAt'
-                    -   property: 'roles'
-                        type: 'choice'
-                        type_options:
-                            expanded: true
-                            multiple: true
-                            choices: { 'ROLE_USER': 'Normal user', 'ROLE_ADMIN': 'Administrator' }
+                    - { property: 'roles', type: 'choice', type_options: { multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_MODERATOR': 'ROLE_MODERATOR', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
+
 #            form:
 #                fields:
 #                    - { property: 'isActive', label: 'Is Active?'}
