@@ -5,6 +5,7 @@ import ImageUploading from "react-images-uploading";
 import TagField from "../components/forms/TagField";
 import {toast} from "react-toastify";
 import {URL_MEDIA} from "../config";
+import ButtonCustom from "../components/forms/ButtonCustom";
 
 const PostEditPage = React.memo(({history, match}) => {
 
@@ -13,6 +14,8 @@ const PostEditPage = React.memo(({history, match}) => {
             content: '0123456789',
             image: []
         });
+        const [loaded, setLoaded] = useState(false)
+
         const isMounted = useRef(null);
 
         const {id = "new"} = match.params;
@@ -70,19 +73,22 @@ const PostEditPage = React.memo(({history, match}) => {
 
             if (post.content.length < 10 || post.content.length > 100) {
                 formIsValid = false;
-                theErrors['content'] = "min 10 et max 100 caracteres"
+                theErrors['content'] = "min 10 et max 100 caractères"
             }
             if (!editing && !post.image[0]) {
                 theErrors['image'] = "image obligatoire"
                 formIsValid = false;
             }
             setErrors(theErrors);
+            setLoaded(false)
+
             return formIsValid;
         }
 
         const handleSubmit = event => {
             event.preventDefault();
             if (formValidator()) {
+            setLoaded(true)
                 setErrors({});
                 if (editing) {
                     try {
@@ -91,17 +97,26 @@ const PostEditPage = React.memo(({history, match}) => {
                             hashtags: post.hashtags
                         }, id)
                         toast.success('🦄Post mis a jour !');
-                        history.replace("/account-posts")
+                        setTimeout(() => {
+                            history.replace("/account-posts")
+                        }, 2000)
                     } catch (error) {
                         toast.error("Erreur pendant l'édition")
+                        setLoaded(false)
+
+
                     }
                 } else {
                     try {
                         PostsAPI.create(post)
                         toast.success('🦄Post créé !');
-                        history.replace("/account-posts")
+                        setTimeout(() => {
+                            history.replace("/account-posts")
+                        }, 2000)
                     } catch (e) {
                         toast.error("Erreur pendant la création")
+                        setLoaded(false)
+
                     }
 
                 }
@@ -156,9 +171,7 @@ const PostEditPage = React.memo(({history, match}) => {
             {!editing && <h1>Nouveau TROP 2 TROP</h1> || <h1>Modification du TROP 2 TROP</h1>}
             <form onSubmit={handleSubmit}>
                 <br/><br/>
-                <div className="form-group">
-                    <button type="submit" className="btn btn-primary">{!editing && "Poster" || "Mettre à jour"}</button>
-                </div>
+                <ButtonCustom loaded={loaded} text={!editing && "Poster" || "Mettre à jour"}/>
                 <p>1 tags obligatoire, min 2 max 10 caractères, pas d'espaces ni caractères spéciaux</p>
                 <div className="row">
                     <div className="col-3">

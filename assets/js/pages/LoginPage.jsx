@@ -4,6 +4,7 @@ import AuthContext from "../contexts/AuthContext";
 import Field from "../components/forms/Field";
 import {toast} from "react-toastify";
 import {NavLink} from "react-router-dom";
+import ButtonCustom from "../components/forms/ButtonCustom";
 
 const LoginPage = ({history}) => {
     const {setIsAuthenticated} = useContext(AuthContext)
@@ -12,6 +13,7 @@ const LoginPage = ({history}) => {
         username: '',
         password: ''
     });
+    const [loaded, setLoaded] = useState(false)
 
     const [error, setError] = useState("");
 
@@ -24,15 +26,21 @@ const LoginPage = ({history}) => {
     // Gestion du submit
     const handleSubmit = async (event) => {
         event.preventDefault();
+        setLoaded(true)
         try {
             await AuthAPI.authenticate(credentials)
             setError("");
             setIsAuthenticated(true)
             toast.success('🦄Connexion réussi !');
+            setTimeout(() => {
             history.replace("/posts")
+            }, 2000)
+
         } catch (e) {
             setError(e.response.data.message)
-            toast.error("Erreur de connexion")
+            // toast.error("Erreur de connexion")
+            setLoaded(false)
+
         }
     }
 
@@ -44,9 +52,9 @@ const LoginPage = ({history}) => {
         <form onSubmit={handleSubmit}>
             <Field name="username" label="Votre email" value={credentials.username} onChange={handleChange} placeholder="email de connexion" type="email" error={error}/>
             <Field name="password" label="Votre mot de passe" value={credentials.password} onChange={handleChange} placeholder="password de connexion" type="password" error={error}/>
-            <div className="form-group">
-                <button type="submit" className="btn btn-dark">Connexion</button>
-            </div>
+
+            <ButtonCustom loaded={loaded} text={"Connexion"}/>
+
         </form>
         <br/>
         <NavLink to="#">Mot de passe oublié ?</NavLink><br/>

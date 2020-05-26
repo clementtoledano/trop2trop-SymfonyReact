@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import {HashRouter, Route, Switch, withRouter, Redirect} from "react-router-dom";
 import "bootswatch/dist/slate/bootstrap.min.css";
 import 'bootstrap/dist/js/bootstrap.bundle.min';
+import '@fortawesome/fontawesome-free/css/all.css';
 
 import '../css/app.css';
 import Navbar from "./components/Navbar";
@@ -50,7 +51,7 @@ const App = () => {
 
 
         <ToastContainer
-            position="top-right"
+            position="bottom-center"
             autoClose={5000}
             hideProgressBar={false}
             newestOnTop={false}
