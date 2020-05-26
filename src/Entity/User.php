@@ -44,7 +44,7 @@ use App\Controller\ResetPasswordAction;
  *             "denormalization_context"={
  *                 "groups"={"put-reset-password"}
  *             },
- *             "validation_groups"={"Default", "put-reset-password"}
+ *             "validation_groups"={"Default","put-reset-password"}
  *         }
  *     },
  *     collectionOperations={
@@ -83,7 +83,7 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=180, unique=true)
      * @Groups({"post:read", "get", "post", "put"})
      * @Assert\NotBlank(message="l'email est obligatoire", groups={"post", "put"})
-     * @Assert\Email(message="le format de l'email doit etre correct", groups={"post", "put"})
+     * @Assert\Email(message="le format de l'email doit etre correct", groups={"post", "put","admin"})
      */
     private $email;
 
@@ -96,11 +96,11 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"post"})
-     * @Assert\NotBlank(groups={"post"})
+     * @Assert\NotBlank(groups={"post","admin"})
      * @Assert\Regex(
      *     pattern="/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{7,}/",
      *     message="Password must be seven characters long and contain at least one digit, one upper case letter and one lower case letter",
-     *     groups={"post"}
+     *     groups={"post","admin"}
      * )
      */
     private $password;
@@ -149,9 +149,9 @@ class User implements UserInterface
      * @Assert\Length(
      *     min="3", minMessage="le pseudo doit faire au moins 3 caractères",
      *     max="20", maxMessage="le pseudo doit faire au maximum 20 caractères",
-     *     groups={"post", "put"}
+     *     groups={"post", "put","admin"}
      *     )
-     * @Assert\NotBlank(message="le pseudo est obligatoire", groups={"post"})
+     * @Assert\NotBlank(message="le pseudo est obligatoire", groups={"post","admin"})
      */
     private $name;
 

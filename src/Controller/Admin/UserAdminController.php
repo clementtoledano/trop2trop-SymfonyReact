@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Admin;
 
 use App\Entity\User;
@@ -26,21 +27,22 @@ class UserAdminController extends EasyAdminController
         parent::persistEntity($entity);
     }
 
-//    /**
-//     * @param User $entity
-//     */
-//    protected function updateEntity($entity): void
-//    {
-//        $this->encodeUserPassword($entity);
-//        parent::updateEntity($entity);
-//    }
+    /**
+     * @param User $entity
+     */
+    protected function updateEntity($entity): void
+    {
+
+        $this->encodeUserPassword($entity);
+        parent::updateEntity($entity);
+    }
 
     /**
      * @param User $entity
      */
     private function encodeUserPassword($entity): void
     {
-        $entity->setPassword(
+        $entity->setPassword((strpos($entity->getPassword(), '$argon2i$') === 0) ? $entity->getPassword() :
             $this->passwordEncoder->encodePassword(
                 $entity,
                 $entity->getPassword()
